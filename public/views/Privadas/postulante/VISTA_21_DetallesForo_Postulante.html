@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PortalEmpleos — Mis Aplicaciones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap"
+          rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1d4ed8;
+            --accent: #10B981;
+            --bg: #F8FAFC;
+            --text: #1E293B;
+            --muted: #64748B;
+            --sidebar-w: 260px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Sora', sans-serif;
+        }
+
+        .sidebar {
+            width: var(--sidebar-w);
+            background: #0F172A;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 24px 20px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar-brand a {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .sidebar-brand a span {
+            color: var(--accent);
+        }
+
+        .sidebar-nav {
+            padding: 16px 0;
+            flex: 1;
+        }
+
+        .nav-section-label {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 8px 20px 4px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            font-size: .9rem;
+            font-weight: 500;
+            transition: all .2s;
+        }
+
+        .sidebar-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .sidebar-link.active {
+            color: #fff;
+            background: rgba(37, 99, 235, 0.25);
+            border-left: 3px solid var(--primary);
+        }
+
+        .sidebar-link i {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .user-mini .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: .85rem;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-w);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar h5 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .page-content {
+            padding: 28px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* Kanban / Status columns */
+        .status-tabs .nav-link {
+            color: var(--muted);
+            font-weight: 600;
+            padding: 10px 20px;
+            border: none;
+            border-bottom: 2px solid transparent;
+            border-radius: 0;
+        }
+
+        .status-tabs .nav-link.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .status-tabs {
+            border-bottom: 1px solid #e2e8f0;
+            background: #fff;
+            border-radius: 14px 14px 0 0;
+            padding: 0 16px;
+        }
+
+        /* Application cards */
+        .app-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 22px;
+            transition: all .2s;
+        }
+
+        .app-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 16px rgba(37, 99, 235, 0.08);
+        }
+
+        .app-card.interview {
+            border-left: 4px solid var(--accent);
+        }
+
+        .company-logo-md {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            flex-shrink: 0;
+        }
+
+        .status-badge {
+            font-size: .75rem;
+            font-weight: 700;
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .status-review {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-interview {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-offer {
+            background: #f3e8ff;
+            color: #6b21a8;
+        }
+
+        /* Timeline for status */
+        .app-timeline {
+            display: flex;
+            gap: 0;
+            margin-top: 14px;
+        }
+
+        .app-timeline-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .app-timeline-step::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            right: -50%;
+            height: 2px;
+            background: #e2e8f0;
+        }
+
+        .app-timeline-step:last-child::before {
+            display: none;
+        }
+
+        .app-timeline-step .dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .7rem;
+            margin: 0 auto 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dot-done {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .dot-current {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .dot-pending {
+            background: #e2e8f0;
+            color: #94a3b8;
+        }
+
+        .app-timeline-step .label {
+            font-size: .7rem;
+            color: var(--muted);
+        }
+
+        /* Stats mini */
+        .stat-mini {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px 20px;
+            text-align: center;
+        }
+
+        .stat-mini h4 {
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #0F172A, #1e3a5f);
+            padding: 48px 0 32px;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .page-header p {
+            color: #94a3b8;
+        }
+
+        .search-bar {
+            background: #fff;
+            border-radius: 12px;
+            padding: 6px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-bar .form-control, .search-bar .form-select {
+            border: none;
+            font-size: .95rem;
+        }
+
+        .search-bar .form-control:focus, .search-bar .form-select:focus {
+            box-shadow: none;
+        }
+
+        .search-bar .form-select {
+            border-left: 1px solid #e2e8f0;
+            border-radius: 0;
+        }
+
+        .filter-sidebar {
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #e2e8f0;
+            padding: 24px;
+            position: sticky;
+            top: 80px;
+        }
+
+        .filter-sidebar h6 {
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            font-size: .85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .filter-sidebar .form-check-label {
+            font-size: .9rem;
+        }
+
+        .filter-divider {
+            border-top: 1px solid #e2e8f0;
+            margin: 16px 0;
+        }
+
+        .job-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 22px;
+            transition: all .25s;
+            cursor: pointer;
+        }
+
+        .job-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--card-shadow);
+            transform: translateY(-2px);
+        }
+
+        .job-card.featured {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #eff6ff, #fff);
+        }
+
+        .featured-badge {
+            background: var(--primary);
+            color: #fff;
+            font-size: .7rem;
+            font-weight: 700;
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .company-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .badge-type {
+            font-size: .75rem;
+            font-weight: 600;
+            border-radius: 6px;
+            padding: 4px 10px;
+        }
+
+        .badge-full {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .badge-remote {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-part {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-hybrid {
+            background: #f3e8ff;
+            color: #6b21a8;
+        }
+
+        .salary {
+            color: var(--accent);
+            font-weight: 700;
+            font-family: 'Sora', sans-serif;
+            font-size: .95rem;
+        }
+
+        .btn-save {
+            border: 1.5px solid #e2e8f0;
+            background: transparent;
+            color: var(--muted);
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .2s;
+            cursor: pointer;
+        }
+
+        .btn-save:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .results-bar {
+            background: #fff;
+            border-radius: 10px;
+            border: 1.5px solid #e2e8f0;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+        }
+
+        .sort-select {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: .9rem;
+            padding: 6px 12px;
+            color: var(--text);
+        }
+
+        .sort-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .pagination .page-link {
+            color: var(--primary);
+            border-color: #e2e8f0;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #0F172A, #1e3a5f);
+            padding: 56px 0 40px;
+        }
+
+        .page-header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .page-header p {
+            color: #94a3b8;
+        }
+
+        .filter-pill {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-size: .9rem;
+            font-weight: 500;
+            color: var(--text);
+            background: #fff;
+            cursor: pointer;
+            transition: all .2s;
+            text-decoration: none;
+        }
+
+        .filter-pill:hover, .filter-pill.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        .resource-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            overflow: hidden;
+            transition: all .25s;
+        }
+
+        .resource-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--card-shadow);
+            transform: translateY(-3px);
+        }
+
+        .resource-card .card-img {
+            height: 180px;
+            background: linear-gradient(135deg, #0F172A, #2563EB);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .resource-card .card-body {
+            padding: 20px;
+        }
+
+        .resource-card.featured {
+            border-color: var(--primary);
+        }
+
+        .resource-card.featured .card-img {
+            height: 240px;
+        }
+
+        .category-badge {
+            font-size: .75rem;
+            font-weight: 700;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .badge-news {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-tutorial {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .badge-article {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-guide {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .read-time {
+            color: var(--muted);
+            font-size: .8rem;
+        }
+
+        .newsletter-box {
+            background: linear-gradient(135deg, #0F172A, #2563EB);
+            border-radius: 16px;
+            padding: 40px;
+            color: #fff;
+        }
+
+        .newsletter-box h4 {
+            font-weight: 800;
+        }
+
+        .newsletter-box .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 10px;
+        }
+
+        .newsletter-box .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .newsletter-box .form-control:focus {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: none;
+            color: #fff;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #0F172A, #1e3a5f);
+            padding: 48px 0 32px;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .category-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 20px;
+            transition: all .2s;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--card-shadow);
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .thread-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all .2s;
+        }
+
+        .thread-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--card-shadow);
+        }
+
+        .thread-card.pinned {
+            border-color: #fbbf24;
+            background: #fffbeb;
+        }
+
+        .pinned-badge {
+            background: #fef3c7;
+            color: #92400e;
+            font-size: .7rem;
+            font-weight: 700;
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .hot-badge {
+            background: #fee2e2;
+            color: #991b1b;
+            font-size: .7rem;
+            font-weight: 700;
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .avatar-sm {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: .8rem;
+            font-family: 'Sora', sans-serif;
+            flex-shrink: 0;
+        }
+
+        .stat-pill {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: .8rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .filter-pill {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 50px;
+            padding: 6px 16px;
+            font-size: .85rem;
+            font-weight: 500;
+            color: var(--text);
+            background: #fff;
+            cursor: pointer;
+            transition: all .2s;
+            text-decoration: none;
+        }
+
+        .filter-pill:hover, .filter-pill.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        .tag-cloud a {
+            background: #eff6ff;
+            color: var(--primary);
+            border-radius: 6px;
+            padding: 4px 12px;
+            font-size: .8rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all .2s;
+        }
+
+        .tag-cloud a:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .thread-header {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        .avatar-md {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-family: 'Sora', sans-serif;
+            flex-shrink: 0;
+        }
+
+        .post-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .post-card.best-answer {
+            border-color: var(--accent);
+            background: #f0fdf4;
+        }
+
+        .best-answer-badge {
+            background: #d1fae5;
+            color: #065f46;
+            font-size: .75rem;
+            font-weight: 700;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .post-actions button {
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            font-size: .85rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            transition: all .2s;
+        }
+
+        .post-actions button:hover {
+            background: #f1f5f9;
+            color: var(--text);
+        }
+
+        .reply-box {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 24px;
+        }
+
+        .author-sidebar {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .author-avatar-lg {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.2rem;
+            font-family: 'Sora', sans-serif;
+            margin: 0 auto 10px;
+        }
+
+        .related-thread {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 12px;
+            transition: all .2s;
+        }
+
+        .related-thread:hover {
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <a href="VISTA_13_InicioPostulante.html">Portal<span>Empleos</span></a>
+        <div class="text-white-50 mt-1" style="font-size:.75rem;">Portal de candidato</div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">Principal</div>
+        <a href="VISTA_13_InicioPostulante.html" class="sidebar-link"><i class="bi bi-grid-fill"></i>Dashboard</a>
+        <a href="VISTA_14_PerilPostulante.html" class="sidebar-link"><i class="bi bi-person-fill"></i>Mi Perfil / CV</a>
+        <a href="VISTA_17_MisAplicaciones.html" class="sidebar-link"><i class="bi bi-briefcase-fill"></i>Mis Aplicaciones</a>
+
+        <div class="nav-section-label mt-2">Explorar</div>
+        <a href="VISTA_15_Empleos_Postulante.html" class="sidebar-link"><i class="bi bi-search"></i>Buscar Empleos</a>
+        <a href="VISTA_18_Recursos_Postulante.html" class="sidebar-link"><i class="bi bi-book-fill"></i>Recursos</a>
+        <a href="VISTA_20_Foro_Postulante.html" class="sidebar-link active"><i class="bi bi-chat-dots-fill"></i>Foro</a>
+
+        <div class="nav-section-label mt-2">Cuenta</div>
+        <a href="../../Publicas/VISTA_04_Inicio.html" class="sidebar-link"><i class="bi bi-box-arrow-left"></i>Cerrar Sesión</a>
+    </nav>
+
+</aside>
+
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="07-foro-listado.html"
+                                           style="color:var(--primary);text-decoration:none;">Foro</a></li>
+            <li class="breadcrumb-item"><a href="#" style="color:var(--primary);text-decoration:none;">Tecnología</a>
+            </li>
+            <li class="breadcrumb-item active text-muted">¿Vale la pena aprender Rust en 2025?</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <!-- MAIN -->
+        <div class="col-lg-8">
+
+            <!-- THREAD HEADER -->
+            <div class="thread-header">
+                <div class="d-flex gap-2 mb-2 flex-wrap">
+                    <span class="badge"
+                          style="background:#fee2e2;color:#991b1b;font-size:.75rem;border-radius:6px;padding:4px 10px;font-family:'Sora',sans-serif;font-weight:700;"><i
+                            class="bi bi-fire me-1"></i>Trending</span>
+                    <span class="badge"
+                          style="background:#eff6ff;color:var(--primary);font-size:.75rem;border-radius:6px;padding:4px 10px;font-family:'Sora',sans-serif;font-weight:600;">Tecnología</span>
+                </div>
+                <h1 class="h4 fw-bold mb-3">¿Vale la pena aprender Rust en 2025 para conseguir empleo?</h1>
+                <div class="d-flex align-items-center gap-3 flex-wrap text-muted small">
+                    <span><i class="bi bi-chat-dots me-1"></i>38 respuestas</span>
+                    <span><i class="bi bi-hand-thumbs-up me-1"></i>87 likes</span>
+                    <span><i class="bi bi-clock me-1"></i>Hace 3 horas</span>
+                </div>
+            </div>
+
+            <!-- ORIGINAL POST -->
+            <div class="post-card">
+                <div class="d-flex gap-3">
+                    <div>
+                        <div class="avatar-md mb-2"
+                             style="background:linear-gradient(135deg,var(--primary),var(--accent));">MR
+                        </div>
+                        <div class="text-center">
+                            <div class="fw-bold" style="font-size:.8rem;">María R.</div>
+                            <div class="text-muted" style="font-size:.7rem;">Miembro</div>
+                            <div class="text-muted" style="font-size:.7rem;">124 posts</div>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="text-muted small">Publicado hace 3 horas · <strong>Post #1</strong></span>
+                            <div class="d-flex gap-1">
+                                <button class="btn btn-sm btn-outline-secondary" style="font-size:.75rem;"><i
+                                        class="bi bi-share"></i></button>
+                            </div>
+                        </div>
+                        <div class="mb-3" style="line-height:1.7;">
+                            <p>He visto que Rust está ganando mucha tracción en los últimos años, especialmente en
+                                sistemas embebidos, WebAssembly y hasta desarrollo web con frameworks como Axum o
+                                Actix.</p>
+                            <p>Sin embargo, no estoy segura si las empresas en América Latina lo están adoptando
+                                realmente o si es más un lenguaje "de moda" en los círculos tech de EEUU/Europa.</p>
+                            <p><strong>Mi situación:</strong> tengo 3 años de experiencia en Python y JavaScript. Estoy
+                                considerando dedicar los próximos 6 meses a aprender Rust en serio, pero me preocupa que
+                                no haya demanda laboral en la región.</p>
+                            <p>¿Alguien trabaja con Rust en LATAM o tiene experiencia contratando desarrolladores de
+                                Rust? ¿Vale la inversión de tiempo?</p>
+                        </div>
+                        <div class="post-actions d-flex gap-1">
+                            <button><i class="bi bi-hand-thumbs-up me-1"></i>87</button>
+                            <button><i class="bi bi-reply me-1"></i>Responder</button>
+                            <button><i class="bi bi-flag me-1"></i>Reportar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BEST ANSWER -->
+            <div class="post-card">
+                <div class="d-flex gap-3">
+                    <div>
+                        <div class="avatar-md mb-2" style="background:linear-gradient(135deg,#10B981,#059669);">CL</div>
+                        <div class="text-center">
+                            <div class="fw-bold" style="font-size:.8rem;">Carlos L.</div>
+                            <div class="text-muted" style="font-size:.7rem;">Experto</div>
+                            <div class="text-muted" style="font-size:.7rem;">842 posts</div>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="text-muted small">Hace 2 horas · <strong>Post #2</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3" style="line-height:1.7;">
+                            <p>¡Buena pregunta! Trabajo como Lead Developer en una empresa tech en México y hemos estado
+                                evaluando Rust internamente. Te doy mi perspectiva honesta:</p>
+                            <p><strong>La realidad del mercado LATAM:</strong> Rust tiene poca demanda laboral directa
+                                en la región comparado con JavaScript, Python o Java. Si buscas empleo a corto plazo
+                                (6-12 meses), probablemente no es la mejor inversión.</p>
+                            <p><strong>Sin embargo</strong>, hay casos donde sí tiene sentido aprenderlo:</p>
+                            <ul>
+                                <li>Si quieres trabajar remoto para empresas de EEUU/Europa (donde sí hay demanda)</li>
+                                <li>Si trabajas en fintech, blockchain o sistemas de alto rendimiento</li>
+                                <li>Como diferenciador en tu perfil para destacar entre candidatos</li>
+                            </ul>
+                            <p>Con tu perfil de Python + JavaScript, estarías mucho mejor aprendiendo TypeScript
+                                avanzado, AWS o especializándote en una vertical (IA/ML con Python, por ejemplo).</p>
+                        </div>
+                        <div class="post-actions d-flex gap-1">
+                            <button><i class="bi bi-hand-thumbs-up me-1"></i>64</button>
+                            <button><i class="bi bi-reply me-1"></i>Responder</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REPLY 2 -->
+            <div class="post-card">
+                <div class="d-flex gap-3">
+                    <div>
+                        <div class="avatar-md mb-2" style="background:linear-gradient(135deg,#f59e0b,#d97706);">AP</div>
+                        <div class="text-center">
+                            <div class="fw-bold" style="font-size:.8rem;">Ana P.</div>
+                            <div class="text-muted" style="font-size:.7rem;">Miembro</div>
+                            <div class="text-muted" style="font-size:.7rem;">315 posts</div>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="mb-2"><span class="text-muted small">Hace 1 hora · <strong>Post #3</strong></span>
+                        </div>
+                        <div class="mb-3" style="line-height:1.7;">
+                            <p>Yo trabajo remoto para una empresa de Berlín y usamos Rust para el backend de nuestro
+                                servicio de pagos. La diferencia de rendimiento vs Go es notable.</p>
+                            <p>Dicho esto, el proceso de aprendizaje es bastante empinado. Me tomó casi un año sentirme
+                                cómoda con el borrow checker. Si decides aprenderlo, prepárate para frustrarte 😅</p>
+                        </div>
+                        <div class="post-actions d-flex gap-1">
+                            <button><i class="bi bi-hand-thumbs-up me-1"></i>31</button>
+                            <button><i class="bi bi-reply me-1"></i>Responder</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reply-box mt-4">
+                <h6 class="fw-bold mb-3">Tu respuesta</h6>
+                <textarea class="form-control mb-3" rows="5" placeholder="Escribe tu respuesta..." style="border-color:#e2e8f0;border-radius:10px;" disabled></textarea>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">Sé respetuoso y constructivo</span>
+                    <a href="09-login.html" class="btn btn-primary px-4">Publicar respuesta</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="col-lg-4">
+            <!-- Thread author -->
+            <div class="author-sidebar mb-4">
+                <div class="author-avatar-lg">MR</div>
+                <div class="fw-bold mb-1">María Rodríguez</div>
+                <div class="text-muted small mb-2">Miembro desde Enero 2024</div>
+            </div>
+
+            <!-- Tags -->
+            <div class="bg-white border rounded-3 p-4" style="border-color:#e2e8f0!important;">
+                <h6 class="fw-bold mb-3">Etiquetas de este hilo</h6>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="#" class="badge text-decoration-none"
+                       style="background:#eff6ff;color:var(--primary);padding:6px 12px;border-radius:6px;font-size:.8rem;">#rust</a>
+                    <a href="#" class="badge text-decoration-none"
+                       style="background:#eff6ff;color:var(--primary);padding:6px 12px;border-radius:6px;font-size:.8rem;">#tecnología</a>
+                    <a href="#" class="badge text-decoration-none"
+                       style="background:#eff6ff;color:var(--primary);padding:6px 12px;border-radius:6px;font-size:.8rem;">#carrera</a>
+                    <a href="#" class="badge text-decoration-none"
+                       style="background:#eff6ff;color:var(--primary);padding:6px 12px;border-radius:6px;font-size:.8rem;">#latam</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

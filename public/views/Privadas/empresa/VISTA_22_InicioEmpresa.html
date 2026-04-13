@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PortalEmpleos — Mi Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap"
+          rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1d4ed8;
+            --accent: #10B981;
+            --bg: #F8FAFC;
+            --text: #1E293B;
+            --muted: #64748B;
+            --sidebar-w: 260px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Sora', sans-serif;
+        }
+
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1d4ed8;
+            --secondary: #0F172A;
+            --accent: #10B981;
+            --accent-light: #d1fae5;
+            --bg: #F8FAFC;
+            --text: #1E293B;
+            --muted: #64748B;
+            --card-shadow: 0 2px 16px rgba(37, 99, 235, 0.08);
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        h1, h2, h3, h4, h5, .brand {
+            font-family: 'Sora', sans-serif;
+        }
+
+        .sidebar {
+            width: var(--sidebar-w);
+            background: #0F172A;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 24px 20px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar-brand .logo {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .sidebar-brand .logo span {
+            color: var(--accent);
+        }
+
+        .sidebar-brand .role-tag {
+            background: rgba(37, 99, 235, 0.2);
+            color: #93c5fd;
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: .72rem;
+            font-weight: 600;
+            font-family: 'Sora', sans-serif;
+            display: inline-block;
+            margin-top: 6px;
+        }
+
+        .sidebar-nav {
+            padding: 16px 0;
+            flex: 1;
+        }
+
+        .nav-section-label {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 8px 20px 4px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            font-size: .9rem;
+            font-weight: 500;
+            transition: all .2s;
+        }
+
+        .sidebar-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .sidebar-link.active {
+            color: #fff;
+            background: rgba(37, 99, 235, 0.25);
+            border-left: 3px solid var(--primary);
+        }
+
+        .sidebar-link i {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-link .badge-count {
+            background: rgba(37, 99, 235, 0.3);
+            color: #93c5fd;
+            border-radius: 20px;
+            padding: 1px 7px;
+            font-size: .7rem;
+            margin-left: auto;
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .company-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .company-mini .logo-sm {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), #60a5fa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .navbar-brand {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--primary) !important;
+            letter-spacing: -0.5px;
+        }
+
+        .navbar-brand span {
+            color: var(--accent);
+        }
+
+        .nav-link {
+            color: var(--text) !important;
+            font-weight: 500;
+            transition: color .2s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary) !important;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #0F172A 0%, #1e3a5f 60%, #2563EB 100%);
+            padding: 100px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            border-radius: 50%;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, transparent 70%);
+            bottom: -80px;
+            left: -80px;
+            border-radius: 50%;
+        }
+
+        .hero-badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10B981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 50px;
+            padding: 6px 16px;
+            display: inline-block;
+            font-size: .85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            color: #10B981;
+        }
+
+        .hero p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            max-width: 540px;
+        }
+
+        .search-box {
+            background: #fff;
+            border-radius: 14px;
+            padding: 8px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .search-box .form-control {
+            border: none;
+            font-size: 1rem;
+            color: var(--text);
+        }
+
+        .search-box .form-control:focus {
+            box-shadow: none;
+        }
+
+        .search-box .form-select {
+            border: none;
+            border-left: 1px solid #e2e8f0;
+            border-radius: 0;
+            color: var(--muted);
+        }
+
+        .search-box .form-select:focus {
+            box-shadow: none;
+        }
+
+        .hero-stats span {
+            color: #94a3b8;
+            font-size: .9rem;
+        }
+
+        .hero-stats strong {
+            color: #fff;
+        }
+
+        .hero-img-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            color: #fff;
+        }
+
+        .floating-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 14px 18px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: absolute;
+        }
+
+        .floating-card .icon-wrap {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* STATS */
+        .stats-section {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .stat-item {
+            border-right: 1px solid #e2e8f0;
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-item h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        /* CATEGORIES */
+        .category-card {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all .25s;
+            cursor: pointer;
+            background: #fff;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .category-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--card-shadow);
+            transform: translateY(-3px);
+            color: var(--primary);
+        }
+
+        .category-card .icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .category-card h6 {
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .category-card small {
+            color: var(--muted);
+        }
+
+        /* JOB CARDS */
+        .job-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 24px;
+            transition: all .25s;
+        }
+
+        .job-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--card-shadow);
+            transform: translateY(-2px);
+        }
+
+        .company-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .badge-type {
+            font-size: .75rem;
+            font-weight: 600;
+            border-radius: 6px;
+            padding: 4px 10px;
+        }
+
+        .badge-full {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .badge-remote {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-part {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .salary {
+            color: var(--accent);
+            font-weight: 700;
+            font-family: 'Sora', sans-serif;
+            font-size: .95rem;
+        }
+
+        .btn-save {
+            border: 1.5px solid #e2e8f0;
+            background: transparent;
+            color: var(--muted);
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .2s;
+        }
+
+        .btn-save:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* HOW IT WORKS */
+        .step-number {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #1d4ed8);
+            color: #fff;
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .step-connector {
+            position: relative;
+        }
+
+        .step-connector::after {
+            content: '';
+            position: absolute;
+            top: 26px;
+            left: calc(50% + 40px);
+            width: calc(100% - 80px);
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        /* COMPANIES */
+        .company-logo-box {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--muted);
+            transition: all .2s;
+        }
+
+        .company-logo-box:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: var(--card-shadow);
+        }
+
+        /* TESTIMONIALS */
+        .testimonial-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-family: 'Sora', sans-serif;
+        }
+
+        /* CTA */
+        .cta-section {
+            background: linear-gradient(135deg, #0F172A 0%, #2563EB 100%);
+        }
+
+        /* FOOTER */
+        footer {
+            background: #0F172A;
+            color: #94a3b8;
+        }
+
+        footer h6 {
+            color: #fff;
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        footer a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color .2s;
+        }
+
+        footer a:hover {
+            color: #fff;
+        }
+
+        .footer-brand {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: #fff;
+        }
+
+        .footer-brand span {
+            color: var(--accent);
+        }
+
+        .section-label {
+            color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+            font-size: .85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .section-title {
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <a href="VISTA_22_InicioEmpresa.html" class="logo">Portal<span>Empleos</span></a>
+        <div class="role-tag">🏢 Portal Empleador</div>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">Principal</div>
+        <a href="VISTA_22_InicioEmpresa.html" class="sidebar-link active"><i class="bi bi-grid-fill"></i>Dashboard</a>
+        <a href="VISTA_23_OfertasEmpresa.html" class="sidebar-link"><i class="bi bi-briefcase-fill"></i>Mis Ofertas</a>
+        <a href="VISTA_27_PublicarOfertaEmpresa.html" class="sidebar-link"><i class="bi bi-plus-circle-fill"></i>Publicar Empleo</a>
+        <a href="VISTA_26_AplicacionesEmpresa.html" class="sidebar-link"><i class="bi bi-people-fill"></i>Aplicaciones</a>
+        <div class="nav-section-label mt-2">Empresa</div>
+        <a href="VISTA_29_PerfilEmpresa.html" class="sidebar-link"><i class="bi bi-building"></i>Perfil Empresa</a>
+        <div class="nav-section-label mt-2">Soporte</div>
+        <a href="../../Publicas/VISTA_04_Inicio.html" class="sidebar-link"><i class="bi bi-box-arrow-left"></i>Cerrar Sesión</a>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="company-mini">
+            <div class="logo-sm">🏢</div>
+            <div>
+                <div style="color:#fff;font-size:.85rem;font-weight:600;">TechCorp S.A.</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<div style="margin-left:var(--sidebar-w)">
+    <section class="hero">
+        <div class="container position-relative" style="z-index:1;">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <h1>Encuentra el empleo que <span>mereces</span></h1>
+                    <p class="mt-3 mb-4">Conectamos talento con oportunidades reales. Miles de empresas confían en
+                        PortalEmpleos para encontrar a sus próximos colaboradores.</p>
+
+                    <!-- Search Box -->
+                    <div class="search-box d-flex align-items-center gap-2 mb-4">
+                        <i class="bi bi-search text-muted ms-2 fs-5"></i>
+                        <input type="text" class="form-control py-2" placeholder="Cargo, habilidad o empresa..."/>
+                        <select class="form-select py-2" style="max-width:160px;">
+                            <option>Todas las áreas</option>
+                            <option>Tecnología</option>
+                            <option>Marketing</option>
+                            <option>Finanzas</option>
+                        </select>
+                        <button class="btn btn-primary px-4 py-2 rounded-3 flex-shrink-0">Buscar</button>
+                    </div>
+
+                    <div class="hero-stats d-flex gap-4 flex-wrap">
+                        <div><strong>45K+</strong> <span>Empleos activos</span></div>
+                        <div><strong>8K+</strong> <span>Empresas</span></div>
+                        <div><strong>200K+</strong> <span>Candidatos</span></div>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <div class="hero-img-card position-relative" style="height:340px;">
+                        <div class="floating-card" style="top:0;left:0;right:0;margin:auto;width:280px;">
+                            <div class="icon-wrap" style="background:#dbeafe;color:#2563EB;"><i
+                                    class="bi bi-briefcase-fill"></i></div>
+                            <div>
+                                <div style="font-weight:600;font-size:.9rem;color:#1E293B;">Desarrollador Full Stack
+                                </div>
+                                <div style="font-size:.8rem;color:#64748B;">TechCorp · Remoto</div>
+                            </div>
+                            <span class="ms-auto badge"
+                                  style="background:#d1fae5;color:#065f46;font-size:.75rem;">Nuevo</span>
+                        </div>
+                        <div class="floating-card" style="bottom:60px;left:20px;width:220px;">
+                            <div class="icon-wrap" style="background:#fef3c7;color:#d97706;"><i
+                                    class="bi bi-graph-up-arrow"></i></div>
+                            <div>
+                                <div style="font-weight:700;font-size:1rem;color:#10B981;">+38%</div>
+                                <div style="font-size:.8rem;color:#64748B;">Más contrataciones</div>
+                            </div>
+                        </div>
+                        <div class="floating-card" style="bottom:20px;right:20px;width:200px;">
+                            <div style="display:flex;gap:-8px;">
+                                <div class="avatar" style="width:32px;height:32px;font-size:.8rem;">A</div>
+                                <div class="avatar"
+                                     style="width:32px;height:32px;font-size:.8rem;margin-left:-8px;background:linear-gradient(135deg,#10B981,#059669);">
+                                    B
+                                </div>
+                                <div class="avatar"
+                                     style="width:32px;height:32px;font-size:.8rem;margin-left:-8px;background:linear-gradient(135deg,#f59e0b,#d97706);">
+                                    C
+                                </div>
+                            </div>
+                            <div>
+                                <div style="font-weight:600;font-size:.85rem;color:#1E293B;">200K candidatos</div>
+                                <div style="font-size:.75rem;color:#64748B;">registrados</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS BAR -->
+    <section class="stats-section py-4">
+        <div class="container">
+            <div class="row text-center d-flex justify-content-center">
+                <div class="col-6 col-md-3 stat-item py-2">
+                    <h3 class="mb-0">45K+</h3>
+                    <p class="text-muted mb-0 small">Empleos activos</p>
+                </div>
+                <div class="col-6 col-md-3 stat-item py-2">
+                    <h3 class="mb-0">8K+</h3>
+                    <p class="text-muted mb-0 small">Empresas registradas</p>
+                </div>
+                <div class="col-6 col-md-3 stat-item py-2">
+                    <h3 class="mb-0">200K+</h3>
+                    <p class="text-muted mb-0 small">Candidatos</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-4">
+                <div class="section-label mb-2">Explora por área</div>
+                <h2 class="section-title">Categorías de empleo</h2>
+            </div>
+            <div class="row g-3">
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="VISTA_15_Empleos_Postulante.html" class="category-card d-block">
+                        <span class="icon">💻</span>
+                        <h6>Tecnología</h6>
+                        <small>3,240 empleos</small>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="VISTA_15_Empleos_Postulante.html" class="category-card d-block">
+                        <span class="icon">📊</span>
+                        <h6>Marketing</h6>
+                        <small>1,850 empleos</small>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="VISTA_15_Empleos_Postulante.html" class="category-card d-block">
+                        <span class="icon">💰</span>
+                        <h6>Finanzas</h6>
+                        <small>1,120 empleos</small>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="VISTA_15_Empleos_Postulante.html" class="category-card d-block">
+                        <span class="icon">🎨</span>
+                        <h6>Diseño</h6>
+                        <small>980 empleos</small>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="VISTA_15_Empleos_Postulante.html" class="category-card d-block">
+                        <span class="icon">🏥</span>
+                        <h6>Salud</h6>
+                        <small>2,400 empleos</small>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="VISTA_15_Empleos_Postulante.html" class="category-card d-block">
+                        <span class="icon">⚖️</span>
+                        <h6>Legal</h6>
+                        <small>640 empleos</small>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="VISTA_15_Empleos_Postulante.html" class="category-card d-block">
+                        <span class="icon">🎓</span>
+                        <h6>Educación</h6>
+                        <small>1,300 empleos</small>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="VISTA_15_Empleos_Postulante.html" class="category-card d-block">
+                        <span class="icon">🔧</span>
+                        <h6>Ingeniería</h6>
+                        <small>2,100 empleos</small>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURED JOBS -->
+    <section class="py-5" style="background:#fff;">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div>
+                    <div class="section-label mb-1">Oportunidades destacadas</div>
+                    <h2 class="section-title mb-0">Empleos recientes</h2>
+                </div>
+                <a href="VISTA_15_Empleos_Postulante.html" class="btn btn-outline-primary btn-sm">Ver todos <i
+                        class="bi bi-arrow-right ms-1"></i></a>
+            </div>
+            <div class="row g-3">
+                <!-- Job Card 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="job-card h-100">
+                        <div class="d-flex align-items-start gap-3 mb-3">
+                            <div class="company-logo">🏢</div>
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0 fw-bold">Desarrollador Full Stack</h6>
+                                <span class="text-muted small">TechCorp S.A.</span>
+                            </div>
+                            <button class="btn-save"><i class="bi bi-bookmark"></i></button>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            <span class="badge badge-full">Tiempo completo</span>
+                            <span class="badge badge-remote">Remoto</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-3 text-muted small mb-3">
+                            <span><i class="bi bi-geo-alt me-1"></i>San Salvador</span>
+                            <span><i class="bi bi-clock me-1"></i>Hace 2 días</span>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="salary">$2,500 – $3,500/mes</span>
+                            <a href="VISTA_06_DetallesEmpleo.html" class="btn btn-primary btn-sm">Ver oferta</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Job Card 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="job-card h-100">
+                        <div class="d-flex align-items-start gap-3 mb-3">
+                            <div class="company-logo">🌿</div>
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0 fw-bold">Diseñador UX/UI Senior</h6>
+                                <span class="text-muted small">GreenMedia</span>
+                            </div>
+                            <button class="btn-save"><i class="bi bi-bookmark"></i></button>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            <span class="badge badge-full">Tiempo completo</span>
+                            <span class="badge badge-remote">Híbrido</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-3 text-muted small mb-3">
+                            <span><i class="bi bi-geo-alt me-1"></i>Guatemala</span>
+                            <span><i class="bi bi-clock me-1"></i>Hace 3 días</span>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="salary">$1,800 – $2,800/mes</span>
+                            <a href="VISTA_06_DetallesEmpleo.html" class="btn btn-primary btn-sm">Ver oferta</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Job Card 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="job-card h-100">
+                        <div class="d-flex align-items-start gap-3 mb-3">
+                            <div class="company-logo">🚀</div>
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0 fw-bold">Marketing Manager</h6>
+                                <span class="text-muted small">StartupXYZ</span>
+                            </div>
+                            <button class="btn-save"><i class="bi bi-bookmark"></i></button>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            <span class="badge badge-part">Medio tiempo</span>
+                            <span class="badge badge-remote">Remoto</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-3 text-muted small mb-3">
+                            <span><i class="bi bi-geo-alt me-1"></i>Remoto</span>
+                            <span><i class="bi bi-clock me-1"></i>Hoy</span>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="salary">$1,200 – $1,800/mes</span>
+                            <a href="VISTA_06_DetallesEmpleo.html" class="btn btn-primary btn-sm">Ver oferta</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <div class="section-label mb-2">Simple y efectivo</div>
+                <h2 class="section-title">¿Cómo funciona?</h2>
+                <p class="text-muted">Encuentra tu próximo trabajo en 3 pasos</p>
+            </div>
+            <div class="row g-4 text-center">
+                <div class="col-md-4 step-connector">
+                    <div class="step-number">1</div>
+                    <h5 class="fw-bold mb-2">Crea tu perfil</h5>
+                    <p class="text-muted">Regístrate gratis y completa tu perfil con tu experiencia y habilidades.</p>
+                </div>
+                <div class="col-md-4 step-connector">
+                    <div class="step-number">2</div>
+                    <h5 class="fw-bold mb-2">Explora empleos</h5>
+                    <p class="text-muted">Filtra por categoría, ubicación, salario y tipo de empleo.</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-number">3</div>
+                    <h5 class="fw-bold mb-2">Aplica y conecta</h5>
+                    <p class="text-muted">Envía tu aplicación con un clic y espera la respuesta de la empresa.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOP COMPANIES -->
+    <section class="py-5" style="background:#fff;">
+        <div class="container">
+            <div class="text-center mb-4">
+                <div class="section-label mb-2">Las mejores empresas te esperan</div>
+                <h2 class="section-title">Empresas destacadas</h2>
+            </div>
+            <div class="row g-3 justify-content-center">
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="company-logo-box">TechCorp</div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="company-logo-box">GreenMedia</div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="company-logo-box">FinGroup</div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="company-logo-box">HealthPlus</div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="company-logo-box">EduNet</div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="company-logo-box">BuildCo</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="footer-brand mb-3">Portal<span>Empleos</span></div>
+                    <p class="small mb-3">La plataforma líder de empleos en Centroamérica. Conectamos talento con
+                        oportunidades.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#"><i class="bi bi-facebook fs-5"></i></a>
+                        <a href="#"><i class="bi bi-twitter-x fs-5"></i></a>
+                        <a href="#"><i class="bi bi-linkedin fs-5"></i></a>
+                        <a href="#"><i class="bi bi-instagram fs-5"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h6 class="mb-3">Empleos</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="#">Por categoría</a></li>
+                        <li class="mb-2"><a href="#">Por empresa</a></li>
+                        <li class="mb-2"><a href="#">Remotos</a></li>
+                        <li class="mb-2"><a href="#">Destacados</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h6 class="mb-3">Para empresas</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="#">Publicar empleo</a></li>
+                        <li class="mb-2"><a href="#">Planes</a></li>
+                        <li class="mb-2"><a href="#">Buscar candidatos</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h6 class="mb-3">Recursos</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="#">Noticias</a></li>
+                        <li class="mb-2"><a href="#">Tutoriales</a></li>
+                        <li class="mb-2"><a href="#">Foro</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h6 class="mb-3">Empresa</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="#">Sobre nosotros</a></li>
+                        <li class="mb-2"><a href="#">Contacto</a></li>
+                        <li class="mb-2"><a href="#">Privacidad</a></li>
+                        <li class="mb-2"><a href="#">Términos</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-secondary mt-4 mb-3"/>
+            <div class="d-flex flex-wrap justify-content-between align-items-center small">
+                <span>© 2025 PortalEmpleos. Todos los derechos reservados.</span>
+                <span>Hecho con <i class="bi bi-heart-fill text-danger"></i> en Centroamérica</span>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

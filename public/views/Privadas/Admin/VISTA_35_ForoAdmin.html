@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PortalEmpleos — Admin · Gestión del Foro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap"
+          rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1d4ed8;
+            --accent: #10B981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg: #F8FAFC;
+            --text: #1E293B;
+            --muted: #64748B;
+            --sidebar-w: 260px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Sora', sans-serif;
+        }
+
+        .sidebar {
+            width: var(--sidebar-w);
+            background: #0F172A;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 24px 20px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar-brand .logo {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .sidebar-brand .logo span {
+            color: var(--accent);
+        }
+
+        .sidebar-brand .admin-tag {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: .72rem;
+            font-weight: 700;
+            font-family: 'Sora', sans-serif;
+            display: inline-block;
+            margin-top: 6px;
+        }
+
+        .sidebar-nav {
+            padding: 16px 0;
+            flex: 1;
+        }
+
+        .nav-section-label {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 8px 20px 4px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            font-size: .9rem;
+            font-weight: 500;
+            transition: all .2s;
+        }
+
+        .sidebar-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .sidebar-link.active {
+            color: #fff;
+            background: rgba(37, 99, 235, 0.25);
+            border-left: 3px solid var(--primary);
+        }
+
+        .sidebar-link i {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-link .badge-count {
+            border-radius: 20px;
+            padding: 1px 7px;
+            font-size: .7rem;
+            margin-left: auto;
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+        }
+
+        .badge-warn {
+            background: rgba(239, 68, 68, 0.25);
+            color: #fca5a5;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .admin-mini .av {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: .85rem;
+            font-family: 'Sora', sans-serif;
+            flex-shrink: 0;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-w);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar h5 {
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .page-content {
+            padding: 28px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .stat-mini {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px 20px;
+            text-align: center;
+        }
+
+        .stat-mini h4 {
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .filter-bar {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+        }
+
+        /* Reported section */
+        .reported-card {
+            background: #fff;
+            border: 1.5px solid #fecaca;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 12px;
+        }
+
+        .report-badge {
+            background: #fee2e2;
+            color: #991b1b;
+            font-size: .72rem;
+            font-weight: 700;
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .user-avatar-sm {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: .75rem;
+            font-family: 'Sora', sans-serif;
+            flex-shrink: 0;
+        }
+
+        /* Thread list */
+        .thread-admin-row {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .thread-admin-row:hover {
+            border-color: var(--primary);
+        }
+
+        .thread-admin-row.flagged {
+            border-left: 4px solid var(--danger);
+        }
+
+        .status-badge {
+            font-size: .72rem;
+            font-weight: 700;
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .s-active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .s-locked {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .s-removed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .s-pinned {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <a href="VISTA_30_InicioAdmin.html" class="logo">Portal<span>Empleos</span></a>
+        <div class="admin-tag">🛡️ Panel Administrador</div>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">General</div>
+        <a href="VISTA_30_InicioAdmin.html" class="sidebar-link"><i class="bi bi-grid-fill"></i>Dashboard</a>
+        <div class="nav-section-label mt-2">Gestión</div>
+        <a href="VISTA_31_UsuariosAdmin.html" class="sidebar-link"><i class="bi bi-people-fill"></i>Usuarios </a>
+        <a href="VISTA_33_EmpleosAdmin.html" class="sidebar-link"><i class="bi bi-briefcase-fill"></i>Empleos</a>
+        <a href="VISTA_37_Recursos.html" class="sidebar-link"><i class="bi bi-book-fill"></i>Recursos</a>
+        <a href="VISTA_35_ForoAdmin.html" class="sidebar-link active"><i class="bi bi-chat-dots-fill"></i>Foro</a>
+        <div class="nav-section-label mt-2">Sistema</div>
+        <a href="../../Publicas/VISTA_04_Inicio.html" class="sidebar-link"><i class="bi bi-box-arrow-left"></i>Cerrar Sesión</a>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="admin-mini d-flex align-items-center gap-2">
+            <div class="av">AD</div>
+            <div>
+                <div style="color:#fff;font-size:.85rem;font-weight:600;">Admin Principal</div>
+                <div style="color:rgba(255,255,255,0.4);font-size:.72rem;">Super Admin</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<div class="main-content">
+    <div class="topbar">
+        <div>
+            <h5>Gestión del Foro</h5>
+            <div class="text-muted small">5,240 hilos · 2 reportes pendientes</div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="stat-mini"><h4 style="color:var(--text);">5,240</h4>
+                    <div class="text-muted small">Hilos totales</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-mini"><h4 style="color:var(--danger);">2</h4>
+                    <div class="text-muted small">Reportes pendientes</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-mini"><h4 style="color:var(--warning);">5</h4>
+                    <div class="text-muted small">Hilos bloqueados</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ALL THREADS -->
+        <div class="filter-bar d-flex flex-wrap gap-2 align-items-center">
+            <input type="text" class="form-control form-control-sm"
+                   style="max-width:220px;border-color:#e2e8f0;border-radius:8px;" placeholder="Buscar hilo..."/>
+            <select class="form-select form-select-sm" style="width:auto;border-color:#e2e8f0;border-radius:8px;">
+                <option>Todas las categorías</option>
+                <option>Tecnología</option>
+                <option>Búsqueda de Empleo</option>
+                <option>Trabajo Remoto</option>
+            </select>
+            <select class="form-select form-select-sm" style="width:auto;border-color:#e2e8f0;border-radius:8px;">
+                <option>Todos los estados</option>
+                <option>Activos</option>
+                <option>Bloqueados</option>
+                <option>Fijados</option>
+            </select>
+        </div>
+
+        <h6 class="fw-bold mb-3 text-muted" style="font-size:.85rem;">Todos los hilos</h6>
+
+        <div class="thread-admin-row">
+            <div class="flex-grow-1">
+                <div class="fw-bold small"><a href="VISTA_36_DetallesForoAdmin.html" class="text-decoration-none"
+                                              style="color:var(--text);">¿Vale la pena aprender Rust en 2025 para
+                    conseguir empleo?</a></div>
+                <div class="text-muted" style="font-size:.75rem;">María Rodríguez · Tecnología · 38 respuestas · 1,240
+                    vistas
+                </div>
+            </div>
+            <span class="status-badge s-active">Activo</span>
+            <div class="dropdown ms-2">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                        style="font-size:.75rem;padding:4px 8px;">⋯
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" style="font-size:.85rem;">
+                    <li>
+                        <hr class="dropdown-divider"/>
+                    </li>
+                    <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Eliminar</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="thread-admin-row">
+            <div class="flex-grow-1">
+                <div class="fw-bold small"><a href="VISTA_36_DetallesForoAdmin.html" class="text-decoration-none"
+                                              style="color:var(--text);">¿Vale la pena aprender Rust en 2025 para
+                    conseguir empleo?</a></div>
+                <div class="text-muted" style="font-size:.75rem;">María Rodríguez · Tecnología · 38 respuestas · 1,240
+                    vistas
+                </div>
+            </div>
+            <span class="status-badge s-active">Activo</span>
+            <div class="dropdown ms-2">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                        style="font-size:.75rem;padding:4px 8px;">⋯
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" style="font-size:.85rem;">
+                    <li>
+                        <hr class="dropdown-divider"/>
+                    </li>
+                    <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Eliminar</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="thread-admin-row">
+            <div class="flex-grow-1">
+                <div class="fw-bold small"><a href="VISTA_36_DetallesForoAdmin.html" class="text-decoration-none"
+                                              style="color:var(--text);">¿Vale la pena aprender Rust en 2025 para
+                    conseguir empleo?</a></div>
+                <div class="text-muted" style="font-size:.75rem;">María Rodríguez · Tecnología · 38 respuestas · 1,240
+                    vistas
+                </div>
+            </div>
+            <span class="status-badge s-active">Activo</span>
+            <div class="dropdown ms-2">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                        style="font-size:.75rem;padding:4px 8px;">⋯
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" style="font-size:.85rem;">
+                    <li>
+                        <hr class="dropdown-divider"/>
+                    </li>
+                    <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Eliminar</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="thread-admin-row">
+            <div class="flex-grow-1">
+                <div class="fw-bold small"><a href="VISTA_36_DetallesForoAdmin.html" class="text-decoration-none"
+                                              style="color:var(--text);">¿Vale la pena aprender Rust en 2025 para
+                    conseguir empleo?</a></div>
+                <div class="text-muted" style="font-size:.75rem;">María Rodríguez · Tecnología · 38 respuestas · 1,240
+                    vistas
+                </div>
+            </div>
+            <span class="status-badge s-active">Activo</span>
+            <div class="dropdown ms-2">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                        style="font-size:.75rem;padding:4px 8px;">⋯
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" style="font-size:.85rem;">
+                    <li>
+                        <hr class="dropdown-divider"/>
+                    </li>
+                    <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Eliminar</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="thread-admin-row">
+            <div class="flex-grow-1">
+                <div class="fw-bold small"><a href="VISTA_36_DetallesForoAdmin.html" class="text-decoration-none"
+                                              style="color:var(--text);">¿Vale la pena aprender Rust en 2025 para
+                    conseguir empleo?</a></div>
+                <div class="text-muted" style="font-size:.75rem;">María Rodríguez · Tecnología · 38 respuestas · 1,240
+                    vistas
+                </div>
+            </div>
+            <span class="status-badge s-active">Activo</span>
+            <div class="dropdown ms-2">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                        style="font-size:.75rem;padding:4px 8px;">⋯
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" style="font-size:.85rem;">
+                    <li>
+                        <hr class="dropdown-divider"/>
+                    </li>
+                    <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Eliminar</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

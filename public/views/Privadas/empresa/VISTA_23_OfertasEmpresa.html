@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PortalEmpleos — Gestión de Ofertas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap"
+          rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1d4ed8;
+            --accent: #10B981;
+            --bg: #F8FAFC;
+            --text: #1E293B;
+            --muted: #64748B;
+            --sidebar-w: 260px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Sora', sans-serif;
+        }
+
+        .sidebar {
+            width: var(--sidebar-w);
+            background: #0F172A;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 24px 20px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar-brand .logo {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .sidebar-brand .logo span {
+            color: var(--accent);
+        }
+
+        .sidebar-brand .role-tag {
+            background: rgba(37, 99, 235, 0.2);
+            color: #93c5fd;
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: .72rem;
+            font-weight: 600;
+            font-family: 'Sora', sans-serif;
+            display: inline-block;
+            margin-top: 6px;
+        }
+
+        .sidebar-nav {
+            padding: 16px 0;
+            flex: 1;
+        }
+
+        .nav-section-label {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 8px 20px 4px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            font-size: .9rem;
+            font-weight: 500;
+            transition: all .2s;
+        }
+
+        .sidebar-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .sidebar-link.active {
+            color: #fff;
+            background: rgba(37, 99, 235, 0.25);
+            border-left: 3px solid var(--primary);
+        }
+
+        .sidebar-link i {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-link .badge-count {
+            background: rgba(37, 99, 235, 0.3);
+            color: #93c5fd;
+            border-radius: 20px;
+            padding: 1px 7px;
+            font-size: .7rem;
+            margin-left: auto;
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .company-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .company-mini .logo-sm {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), #60a5fa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-w);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar h5 {
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .page-content {
+            padding: 28px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* Tabs */
+        .status-tabs .nav-link {
+            color: var(--muted);
+            font-weight: 600;
+            padding: 10px 18px;
+            border: none;
+            border-bottom: 2px solid transparent;
+            border-radius: 0;
+            font-size: .9rem;
+        }
+
+        .status-tabs .nav-link.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .status-tabs {
+            border-bottom: 1px solid #e2e8f0;
+            background: #fff;
+            padding: 0 16px;
+            border-radius: 14px 14px 0 0;
+        }
+
+        /* Job cards */
+        .offer-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 22px;
+            transition: all .2s;
+        }
+
+        .offer-card:hover {
+            border-color: #c7d2fe;
+            box-shadow: 0 2px 16px rgba(37, 99, 235, 0.06);
+        }
+
+        .offer-card.paused {
+            opacity: .75;
+        }
+
+        .status-pill {
+            font-size: .75rem;
+            font-weight: 700;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .pill-active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .pill-paused {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .pill-closed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .pill-draft {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        /* Mini stats inside offer card */
+        .offer-stat {
+            text-align: center;
+            padding: 8px 14px;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+
+        .offer-stat .num {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .offer-stat .lbl {
+            font-size: .72rem;
+            color: var(--muted);
+        }
+
+        /* Progress bar inside card */
+        .deadline-bar .bar {
+            height: 4px;
+            border-radius: 2px;
+            background: #e2e8f0;
+        }
+
+        .deadline-bar .fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <a href="VISTA_22_InicioEmpresa.html" class="logo">Portal<span>Empleos</span></a>
+        <div class="role-tag">🏢 Portal Empleador</div>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">Principal</div>
+        <a href="VISTA_22_InicioEmpresa.html" class="sidebar-link"><i class="bi bi-grid-fill"></i>Dashboard</a>
+        <a href="VISTA_23_OfertasEmpresa.html" class="sidebar-link active"><i class="bi bi-briefcase-fill"></i>Mis Ofertas</a>
+        <a href="VISTA_27_PublicarOfertaEmpresa.html" class="sidebar-link"><i class="bi bi-plus-circle-fill"></i>Publicar Empleo</a>
+        <a href="VISTA_26_AplicacionesEmpresa.html" class="sidebar-link"><i class="bi bi-people-fill"></i>Aplicaciones</a>
+        <div class="nav-section-label mt-2">Empresa</div>
+        <a href="VISTA_29_PerfilEmpresa.html" class="sidebar-link"><i class="bi bi-building"></i>Perfil Empresa</a>
+        <div class="nav-section-label mt-2">Soporte</div>
+        <a href="../../Publicas/VISTA_04_Inicio.html" class="sidebar-link"><i class="bi bi-box-arrow-left"></i>Cerrar Sesión</a>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="company-mini">
+            <div class="logo-sm">🏢</div>
+            <div>
+                <div style="color:#fff;font-size:.85rem;font-weight:600;">TechCorp S.A.</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<div class="main-content">
+    <div class="topbar">
+        <div>
+            <h5>Gestión de Ofertas</h5>
+            <div class="text-muted small">5 ofertas publicadas · 3 activas</div>
+        </div>
+        <a href="VISTA_27_PublicarOfertaEmpresa.html" class="btn btn-primary btn-sm px-3"><i class="bi bi-plus-lg me-1"></i>Nueva
+            oferta</a>
+    </div>
+
+    <div class="page-content">
+
+        <!-- OFFER CARDS -->
+        <div class="d-flex flex-column gap-3">
+
+            <!-- Active offer 1 -->
+            <div class="offer-card">
+                <div class="row g-3 d-flex justify-content-between align-items-center">
+                    <div class="col-lg-5">
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="status-pill pill-active"><i class="bi bi-circle-fill me-1"
+                                                                     style="font-size:.5rem;"></i>Activa</span>
+                            <span class="text-muted small">Publicada hace 2 días</span>
+                        </div>
+                        <h6 class="fw-bold mb-1"><a href="VISTA_24_DetallesOfertaEmpresa.html" class="text-decoration-none" style="color:var(--text);">Senior
+                            Full Stack Developer (React + Node.js)</a></h6>
+                        <div class="text-muted small d-flex gap-3">
+                            <span><i class="bi bi-geo-alt me-1"></i>San Salvador / Remoto</span>
+                            <span><i class="bi bi-clock me-1"></i>Tiempo completo</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 text-end">
+                        <div class="d-flex gap-2 justify-content-end flex-wrap">
+                            <a href="19-aplicaciones-recibidas.html" class="btn btn-sm btn-primary">Ver aplicantes
+                                (48)</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="offer-card">
+                <div class="row g-3 d-flex justify-content-between align-items-center">
+                    <div class="col-lg-5">
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="status-pill pill-active"><i class="bi bi-circle-fill me-1"
+                                                                     style="font-size:.5rem;"></i>Activa</span>
+                            <span class="text-muted small">Publicada hace 2 días</span>
+                        </div>
+                        <h6 class="fw-bold mb-1"><a href="VISTA_24_DetallesOfertaEmpresa.html" class="text-decoration-none" style="color:var(--text);">Senior
+                            Full Stack Developer (React + Node.js)</a></h6>
+                        <div class="text-muted small d-flex gap-3">
+                            <span><i class="bi bi-geo-alt me-1"></i>San Salvador / Remoto</span>
+                            <span><i class="bi bi-clock me-1"></i>Tiempo completo</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 text-end">
+                        <div class="d-flex gap-2 justify-content-end flex-wrap">
+                            <a href="19-aplicaciones-recibidas.html" class="btn btn-sm btn-primary">Ver aplicantes
+                                (48)</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="offer-card">
+                <div class="row g-3 d-flex justify-content-between align-items-center">
+                    <div class="col-lg-5">
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="status-pill pill-active"><i class="bi bi-circle-fill me-1"
+                                                                     style="font-size:.5rem;"></i>Activa</span>
+                            <span class="text-muted small">Publicada hace 2 días</span>
+                        </div>
+                        <h6 class="fw-bold mb-1"><a href="VISTA_24_DetallesOfertaEmpresa.html" class="text-decoration-none" style="color:var(--text);">Senior
+                            Full Stack Developer (React + Node.js)</a></h6>
+                        <div class="text-muted small d-flex gap-3">
+                            <span><i class="bi bi-geo-alt me-1"></i>San Salvador / Remoto</span>
+                            <span><i class="bi bi-clock me-1"></i>Tiempo completo</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 text-end">
+                        <div class="d-flex gap-2 justify-content-end flex-wrap">
+                            <a href="19-aplicaciones-recibidas.html" class="btn btn-sm btn-primary">Ver aplicantes
+                                (48)</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

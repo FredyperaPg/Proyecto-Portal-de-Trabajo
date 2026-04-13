@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PortalEmpleos — Mis Aplicaciones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap"
+          rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1d4ed8;
+            --accent: #10B981;
+            --bg: #F8FAFC;
+            --text: #1E293B;
+            --muted: #64748B;
+            --sidebar-w: 260px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Sora', sans-serif;
+        }
+
+        .sidebar {
+            width: var(--sidebar-w);
+            background: #0F172A;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 24px 20px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar-brand a {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .sidebar-brand a span {
+            color: var(--accent);
+        }
+
+        .sidebar-nav {
+            padding: 16px 0;
+            flex: 1;
+        }
+
+        .nav-section-label {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 8px 20px 4px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            font-size: .9rem;
+            font-weight: 500;
+            transition: all .2s;
+        }
+
+        .sidebar-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .sidebar-link.active {
+            color: #fff;
+            background: rgba(37, 99, 235, 0.25);
+            border-left: 3px solid var(--primary);
+        }
+
+        .sidebar-link i {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .user-mini .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: .85rem;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-w);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar h5 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .page-content {
+            padding: 28px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* Kanban / Status columns */
+        .status-tabs .nav-link {
+            color: var(--muted);
+            font-weight: 600;
+            padding: 10px 20px;
+            border: none;
+            border-bottom: 2px solid transparent;
+            border-radius: 0;
+        }
+
+        .status-tabs .nav-link.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .status-tabs {
+            border-bottom: 1px solid #e2e8f0;
+            background: #fff;
+            border-radius: 14px 14px 0 0;
+            padding: 0 16px;
+        }
+
+        /* Application cards */
+        .app-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 22px;
+            transition: all .2s;
+        }
+
+        .app-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 16px rgba(37, 99, 235, 0.08);
+        }
+
+        .app-card.interview {
+            border-left: 4px solid var(--accent);
+        }
+
+        .company-logo-md {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            flex-shrink: 0;
+        }
+
+        .status-badge {
+            font-size: .75rem;
+            font-weight: 700;
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .status-review {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-interview {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-offer {
+            background: #f3e8ff;
+            color: #6b21a8;
+        }
+
+        /* Timeline for status */
+        .app-timeline {
+            display: flex;
+            gap: 0;
+            margin-top: 14px;
+        }
+
+        .app-timeline-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .app-timeline-step::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            right: -50%;
+            height: 2px;
+            background: #e2e8f0;
+        }
+
+        .app-timeline-step:last-child::before {
+            display: none;
+        }
+
+        .app-timeline-step .dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .7rem;
+            margin: 0 auto 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dot-done {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .dot-current {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .dot-pending {
+            background: #e2e8f0;
+            color: #94a3b8;
+        }
+
+        .app-timeline-step .label {
+            font-size: .7rem;
+            color: var(--muted);
+        }
+
+        /* Stats mini */
+        .stat-mini {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px 20px;
+            text-align: center;
+        }
+
+        .stat-mini h4 {
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .breadcrumb-item a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .breadcrumb-item.active {
+            color: var(--muted);
+        }
+
+        .job-header {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .company-logo-lg {
+            width: 72px;
+            height: 72px;
+            border-radius: 16px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+        }
+
+        .info-pill {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: .875rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .info-pill i {
+            color: var(--primary);
+        }
+
+        .salary-big {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .content-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 28px;
+            margin-bottom: 20px;
+        }
+
+        .content-card h5 {
+            font-weight: 700;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .content-card ul li {
+            padding: 4px 0;
+            color: var(--text);
+        }
+
+        .skill-tag {
+            background: #eff6ff;
+            color: var(--primary);
+            border-radius: 8px;
+            padding: 6px 14px;
+            font-size: .85rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .sticky-apply {
+            position: sticky;
+            top: 80px;
+        }
+
+        .apply-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .apply-card .salary-big {
+            font-size: 1.3rem;
+        }
+
+        .deadline-badge {
+            background: #fef3c7;
+            color: #92400e;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: .85rem;
+            font-weight: 600;
+        }
+
+        .company-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 24px;
+        }
+
+        .company-logo-sm {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .company-stat {
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .similar-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px;
+            transition: all .2s;
+        }
+
+        .similar-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--card-shadow);
+        }
+
+        .badge-full {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .badge-remote {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .pagination .page-link {
+            color: var(--primary);
+            border-color: #e2e8f0;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <a href="VISTA_13_InicioPostulante.html">Portal<span>Empleos</span></a>
+        <div class="text-white-50 mt-1" style="font-size:.75rem;">Portal de candidato</div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">Principal</div>
+        <a href="VISTA_13_InicioPostulante.html" class="sidebar-link"><i class="bi bi-grid-fill"></i>Dashboard</a>
+        <a href="VISTA_14_PerilPostulante.html" class="sidebar-link"><i class="bi bi-person-fill"></i>Mi Perfil / CV</a>
+        <a href="VISTA_17_MisAplicaciones.html" class="sidebar-link"><i class="bi bi-briefcase-fill"></i>Mis Aplicaciones</a>
+
+        <div class="nav-section-label mt-2">Explorar</div>
+        <a href="VISTA_15_Empleos_Postulante.html" class="sidebar-link active"><i class="bi bi-search"></i>Buscar Empleos</a>
+        <a href="VISTA_18_Recursos_Postulante.html" class="sidebar-link"><i class="bi bi-book-fill"></i>Recursos</a>
+        <a href="VISTA_20_Foro_Postulante.html" class="sidebar-link"><i class="bi bi-chat-dots-fill"></i>Foro</a>
+
+        <div class="nav-section-label mt-2">Cuenta</div>
+        <a href="../../Publicas/VISTA_04_Inicio.html" class="sidebar-link"><i class="bi bi-box-arrow-left"></i>Cerrar Sesión</a>
+    </nav>
+
+</aside>
+
+<div class="main-content">
+    <div class="container py-4">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="01-home.html">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="02-listado-empleos.html">Empleos</a></li>
+                <li class="breadcrumb-item"><a href="#">Tecnología</a></li>
+                <li class="breadcrumb-item active">Senior Full Stack Developer</li>
+            </ol>
+        </nav>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="job-header">
+                    <div class="d-flex gap-4 align-items-start flex-wrap">
+                        <div class="company-logo-lg">🏢</div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-start justify-content-between flex-wrap gap-2">
+                                <div>
+                                    <h1 class="h3 fw-bold mb-1">Senior Full Stack Developer (React + Node.js)</h1>
+                                    <div class="d-flex align-items-center gap-2 mb-3">
+                                        <a href="04-perfil-empresa.html" class="text-decoration-none fw-600"
+                                           style="color:var(--primary);font-weight:600;">TechCorp S.A.</a>
+                                        <span class="badge" style="background:#d1fae5;color:#065f46;font-size:.75rem;"><i
+                                                class="bi bi-patch-check-fill me-1"></i>Verificada</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2">
+                                <span class="info-pill"><i class="bi bi-geo-alt"></i>San Salvador / Remoto</span>
+                                <span class="info-pill"><i class="bi bi-clock"></i>Tiempo completo</span>
+                                <span class="info-pill"><i class="bi bi-laptop"></i>Remoto</span>
+                                <span class="info-pill"><i class="bi bi-calendar3"></i>Publicado hoy</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-3"/>
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                        <div>
+                            <div class="text-muted small mb-1">Rango salarial</div>
+                            <div class="salary-big">$3,000 – $4,500 <span
+                                    style="font-size:1rem;color:var(--muted);">/mes</span></div>
+                        </div>
+                        <div class="text-end">
+                            <div class="text-muted small mb-1">Cierre de aplicaciones</div>
+                            <div class="deadline-badge"><i class="bi bi-calendar-event me-1"></i>15 de Abril, 2025</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h5><i class="bi bi-file-text me-2" style="color:var(--primary);"></i>Descripción del puesto</h5>
+                    <p>Buscamos un <strong>Senior Full Stack Developer</strong> apasionado por construir productos digitales
+                        de calidad. Serás parte de un equipo ágil trabajando en proyectos de alto impacto para clientes de
+                        la región centroamericana y Latinoamérica.</p>
+                    <p>Como parte del equipo, tendrás la oportunidad de diseñar arquitecturas escalables, mentorear
+                        desarrolladores junior y participar activamente en las decisiones técnicas del producto.</p>
+                    <h6 class="mt-4 mb-3 fw-bold">Responsabilidades principales:</h6>
+                    <ul>
+                        <li>Desarrollar y mantener aplicaciones web utilizando React y Node.js</li>
+                        <li>Diseñar e implementar APIs RESTful y GraphQL</li>
+                        <li>Colaborar con el equipo de diseño para implementar interfaces de usuario responsivas</li>
+                        <li>Revisar código de compañeros de equipo y proporcionar retroalimentación constructiva</li>
+                        <li>Participar en la planificación de sprints y reuniones de equipo</li>
+                        <li>Identificar y corregir cuellos de botella y bugs en el sistema</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h5><i class="bi bi-check-circle me-2" style="color:var(--primary);"></i>Requisitos</h5>
+                    <h6 class="fw-bold mb-3">Experiencia y educación:</h6>
+                    <ul class="mb-4">
+                        <li>5+ años de experiencia en desarrollo web full stack</li>
+                        <li>Licenciatura en Informática, Ingeniería de Software o campo relacionado (o experiencia
+                            equivalente)
+                        </li>
+                        <li>Experiencia comprobada con React.js y Node.js</li>
+                        <li>Conocimiento sólido de bases de datos SQL y NoSQL (PostgreSQL, MongoDB)</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h5><i class="bi bi-check-circle me-2" style="color:var(--primary);"></i>Funciones</h5>
+                    <h6 class="fw-bold mb-3">Experiencia y educación:</h6>
+                    <ul class="mb-4">
+                        <li>5+ años de experiencia en desarrollo web full stack</li>
+                        <li>Licenciatura en Informática, Ingeniería de Software o campo relacionado (o experiencia
+                            equivalente)
+                        </li>
+                        <li>Experiencia comprobada con React.js y Node.js</li>
+                        <li>Conocimiento sólido de bases de datos SQL y NoSQL (PostgreSQL, MongoDB)</li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <div class="sticky-apply">
+
+                    <div class="apply-card mb-4">
+                        <a href="09-login.html" class="btn btn-primary w-100 mb-2 py-2">
+                            <i class="bi bi-send-fill me-2"></i>Aplicar ahora
+                        </a>
+                        <hr class="my-3"/>
+                        <div class="d-flex align-items-center justify-content-between text-muted small">
+                            <span><i class="bi bi-eye me-1"></i>2,340 vistas</span>
+                            <span><i class="bi bi-people me-1"></i>48 aplicantes</span>
+                        </div>
+                    </div>
+
+                    <div class="company-card mb-4">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="company-logo-sm">🏢</div>
+                            <div>
+                                <div class="fw-bold">TechCorp S.A.</div>
+                                <div class="text-muted small">Tecnología · San Salvador</div>
+                            </div>
+                        </div>
+                        <a href="04-perfil-empresa.html" class="btn btn-outline-primary btn-sm w-100">Ver perfil de
+                            empresa</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

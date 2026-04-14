@@ -1,11 +1,21 @@
 import { Router } from 'express';
+import * as AuthController from '../controllers/authController.js';
+import {
+    runValidations,
+    registerPostulanteValidators,
+    registerEmpleadorValidators,
+    loginValidators
+} from '../middlewares/validators.js';
 
 const router = Router();
 
-// Ruta de prueba para verificar que el módulo carga
-router.get('/test', (req, res) => {
-    res.json({ message: 'Ruta funcionando' });
-});
+router.post('/register-postulante', runValidations(registerPostulanteValidators), AuthController.registerPostulante);
 
-export default router;// Rutas: authRoutes
-// Define los endpoints y conecta middlewares con el controlador
+router.post('/register-empleador', runValidations(registerEmpleadorValidators), AuthController.registerEmpleador);
+
+router.post('/login', runValidations(loginValidators), AuthController.login);
+
+router.get('/check', AuthController.checkSession);
+router.post('/logout', AuthController.logout);
+
+export default router;

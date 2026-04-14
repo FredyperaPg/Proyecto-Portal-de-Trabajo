@@ -33,12 +33,12 @@ export const loginValidators = [
 
 // 2. Registro de Postulante
 export const registerPostulanteValidators = [
-    body('nombre')
+    body('nombres')
         .trim()
         .notEmpty().withMessage("El nombre es obligatorio")
         .isLength({ min: 3 }).withMessage("El nombre debe tener al menos 3 caracteres"),
 
-    body('apellido')
+    body('apellidos')
         .trim()
         .notEmpty().withMessage("El apellido es obligatorio")
         .isLength({ min: 3 }).withMessage("El apellido debe tener al menos 3 caracteres"),
@@ -71,7 +71,7 @@ export const registerPostulanteValidators = [
 
 // 3. Registro de Empleador
 export const registerEmpleadorValidators = [
-    body(['nombre', 'apellido', 'sector', 'tipoEmpresa'])
+    body(['nombres', 'apellidos', 'sector', 'tipoEmpresa'])
         .trim()
         .notEmpty().withMessage("Este campo es obligatorio")
         .isLength({ min: 3 }).withMessage("Debe tener al menos 3 caracteres"),

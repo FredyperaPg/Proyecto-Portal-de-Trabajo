@@ -114,12 +114,12 @@ export const registerEmpleoValidators = [
     body('vacantes')
         .isInt({ min: 1 }).withMessage("Debe haber al menos 1 vacante"),
 
-    body(['fechaPublicacion', 'fechaVencimiento']).isDate().withMessage("Fecha inválida")
+    body(['fechaVencimiento']).isDate().withMessage("Fecha inválida")
 ];
 
 // 5. Postulaciones
 export const createPostulacionValidators = [
-    body(['idEmpleo', 'idPostulante']).notEmpty().withMessage("ID obligatorio")
+    body(['idEmpleo']).notEmpty().withMessage("ID obligatorio")
 ];
 
 // 6. Recursos Educativos

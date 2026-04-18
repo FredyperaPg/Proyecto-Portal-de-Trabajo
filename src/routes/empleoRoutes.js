@@ -1,11 +1,20 @@
 import { Router } from 'express';
+import * as EmpleoController from '../controllers/empleoController.js';
+import { runValidations, registerEmpleoValidators, createPostulacionValidators } from '../middlewares/validators.js';
+import { isAuth } from '../middlewares/authMiddleware.js'; // El que creamos antes
 
 const router = Router();
 
-// Ruta de prueba para verificar que el módulo carga
-router.get('/test', (req, res) => {
-    res.json({ message: 'Ruta funcionando' });
-});
+router.get('/', EmpleoController.listarEmpleos);
 
-export default router;// Rutas: empleoRoutes
-// Define los endpoints y conecta middlewares con el controlador
+router.post('/', isAuth, runValidations(registerEmpleoValidators), EmpleoController.publicarEmpleo);
+
+router.get('/:id', EmpleoController.obtenerDetalle);
+
+router.post('/postularse', isAuth, runValidations(createPostulacionValidators), EmpleoController.aplicarAEmpleo);
+
+router.put('/:id', isAuth, EmpleoController.modificarEmpleo);
+
+router.delete('/:id', isAuth, EmpleoController.borrarEmpleo);
+
+export default router;

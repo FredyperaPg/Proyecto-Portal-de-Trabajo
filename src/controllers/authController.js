@@ -28,6 +28,11 @@ export const login = async (req, res, next) => {
             if (perfil[0]) usuario.idEmpresa = perfil[0].id;
         }
 
+        if (usuario.rol === 'postulante') {
+            const [perfil] = await db.query('SELECT id FROM Perfil_Candidato WHERE idUsuario = ?', [usuario.id]);
+            if (perfil[0]) usuario.idCandidato = perfil[0].id;
+        }
+
         req.session.usuario = usuario;
         res.json({ status: 'success', message: 'Sesión iniciada', user: usuario });
     } catch (error) { next(error); }

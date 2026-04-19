@@ -8,6 +8,7 @@ import authRoutes from './routes/authRoutes.js';
 import empleoRoutes from './routes/empleoRoutes.js';
 import foroRoutes from './routes/foroRoutes.js';
 import recursoRoutes from './routes/recursoRoutes.js';
+import usuarioRoutes from './routes/usuarioRoutes.js';
 
 
 dotenv.config();
@@ -42,6 +43,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/empleos', empleoRoutes);
 app.use('/api/foro', foroRoutes);
 app.use('/api/recursos', recursoRoutes);
+app.use('/api/usuarios', usuarioRoutes);
 
 
 app.use((req, res, next) => {

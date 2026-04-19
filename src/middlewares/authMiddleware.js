@@ -32,3 +32,10 @@ export const isCandidato = (req, res, next) => {
         message: 'Acceso denegado: Esta acción solo es permitida para postulantes.'
     });
 };
+
+export const isAdmin = (req, res, next) => {
+    if (req.session.usuario && req.session.usuario.rol === 'admin') {
+        return next();
+    }
+    res.status(403).json({ status: 'error', message: 'Acceso denegado: Solo administradores' });
+};

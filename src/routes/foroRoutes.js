@@ -1,11 +1,21 @@
 import { Router } from 'express';
+import * as ForoController from '../controllers/foroController.js';
+import { isAuth } from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
-// Ruta de prueba para verificar que el módulo carga
-router.get('/test', (req, res) => {
-    res.json({ message: 'Ruta funcionando' });
-});
+router.get('/', ForoController.listarForo);
 
-export default router;// Rutas: foroRoutes
-// Define los endpoints y conecta middlewares con el controlador
+router.post('/', isAuth, ForoController.publicar);
+
+router.post('/comentario', isAuth, ForoController.agregarComentario);
+
+router.get('/:id/comentarios', ForoController.listarComentarios);
+
+router.put('/:id', isAuth, ForoController.modificarPost);
+
+router.delete('/:id', isAuth, ForoController.borrarPost);
+
+router.delete('/comentario/:id', isAuth, ForoController.borrarComentario);
+
+export default router;

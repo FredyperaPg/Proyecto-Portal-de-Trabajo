@@ -1,11 +1,13 @@
 import { Router } from 'express';
+import * as PostulacionController from '../controllers/postulacionController.jsontroller.js';
+import { isAuth, isEmpresa, isCandidato } from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
-// Ruta de prueba para verificar que el módulo carga
-router.get('/test', (req, res) => {
-    res.json({ message: 'Ruta funcionando' });
-});
+router.get('/mis-aplicaciones', isAuth, isCandidato, PostulacionController.getMisPostulaciones);
 
-export default router;// Rutas: postulacionRoutes
-// Define los endpoints y conecta middlewares con el controlador
+router.get('/empleo/:idEmpleo', isAuth, isEmpresa, PostulacionController.getPostulantes);
+
+router.put('/:idPostulacion', isAuth, isEmpresa, PostulacionController.updateEstado);
+
+export default router;

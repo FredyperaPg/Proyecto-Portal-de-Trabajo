@@ -1,11 +1,17 @@
 import { Router } from 'express';
+import * as RecursoController from '../controllers/recursoController.js';
+import { isAuth, isAdmin } from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
-// Ruta de prueba para verificar que el módulo carga
-router.get('/test', (req, res) => {
-    res.json({ message: 'Ruta funcionando' });
-});
+router.get('/', RecursoController.listar);
 
-export default router;// Rutas: recursoRoutes
-// Define los endpoints y conecta middlewares con el controlador
+router.get('/:id', RecursoController.obtenerPorId);
+
+router.post('/', isAuth, isAdmin, RecursoController.publicar);
+
+router.put('/:id', isAuth, isAdmin, RecursoController.modificar);
+
+router.delete('/:id', isAuth, isAdmin, RecursoController.eliminar);
+
+export default router;

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PortalEmpleos — Foro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap"
+          rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1d4ed8;
+            --accent: #10B981;
+            --bg: #F8FAFC;
+            --text: #1E293B;
+            --muted: #64748B;
+            --card-shadow: 0 2px 16px rgba(37, 99, 235, 0.08);
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Sora', sans-serif;
+        }
+
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .navbar-brand {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--primary) !important;
+        }
+
+        .navbar-brand span {
+            color: var(--accent);
+        }
+
+        .nav-link {
+            color: var(--text) !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary) !important;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #0F172A, #1e3a5f);
+            padding: 48px 0 32px;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .category-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 20px;
+            transition: all .2s;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--card-shadow);
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .thread-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all .2s;
+        }
+
+        .thread-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--card-shadow);
+        }
+
+        .thread-card.pinned {
+            border-color: #fbbf24;
+            background: #fffbeb;
+        }
+
+        .pinned-badge {
+            background: #fef3c7;
+            color: #92400e;
+            font-size: .7rem;
+            font-weight: 700;
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .hot-badge {
+            background: #fee2e2;
+            color: #991b1b;
+            font-size: .7rem;
+            font-weight: 700;
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .avatar-sm {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: .8rem;
+            font-family: 'Sora', sans-serif;
+            flex-shrink: 0;
+        }
+
+        .stat-pill {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: .8rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .filter-pill {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 50px;
+            padding: 6px 16px;
+            font-size: .85rem;
+            font-weight: 500;
+            color: var(--text);
+            background: #fff;
+            cursor: pointer;
+            transition: all .2s;
+            text-decoration: none;
+        }
+
+        .filter-pill:hover, .filter-pill.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        .tag-cloud a {
+            background: #eff6ff;
+            color: var(--primary);
+            border-radius: 6px;
+            padding: 4px 12px;
+            font-size: .8rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all .2s;
+        }
+
+        .tag-cloud a:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        footer {
+            background: #0F172A;
+            color: #94a3b8;
+        }
+
+        footer a {
+            color: #94a3b8;
+            text-decoration: none;
+        }
+
+        .footer-brand {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: #fff;
+        }
+
+        .footer-brand span {
+            color: var(--accent);
+        }
+    </style>
+
+<style>
+/* ─── Fix: foro no se superpone al sidebar ─── */
+.page-wrapper, .main-content, #main-content {
+    overflow-x: hidden;
+}
+.sidebar ~ .main-content,
+.sidebar + div,
+aside ~ main {
+    min-width: 0;
+}
+#contenedor-foro .card {
+    word-break: break-word;
+}
+/* Spinner override: nunca infinito */
+.spinner-wrapper:empty::after {
+    content: 'No hay datos disponibles.';
+    display: block;
+    color: #6c757d;
+    text-align: center;
+    padding: 2rem;
+    font-size: .9rem;
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg sticky-top shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="/">Portal<span>Empleos</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMain">
+            <ul class="navbar-nav mx-auto gap-1">
+                <li class="nav-item"><a class="nav-link" href="/empleos">Empleos</a></li>
+                <li class="nav-item"><a class="nav-link" href="/recursos">Recursos</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/foro">Foro</a></li>
+            </ul>
+            <div class="d-flex gap-2">
+                <a href="/login" class="btn btn-outline-primary btn-sm px-3">Iniciar Sesión</a>
+                <a href="/registro" class="btn btn-primary btn-sm px-3">Registrarse</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- HEADER -->
+<section class="page-header">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div>
+                <h1 class="mb-1">Foro de la Comunidad</h1>
+                <p class="mb-0" style="color:#94a3b8;">Conecta, aprende y crece con miles de profesionales</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-4">
+
+    <div class="row g-4">
+        <!-- THREADS -->
+        <div class="col-lg-8">
+
+            <!-- Filters -->
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-3">
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="#" class="filter-pill active">Todos</a>
+                    <a href="#" class="filter-pill">🔥 Populares</a>
+                    <a href="#" class="filter-pill">🆕 Recientes</a>
+                </div>
+                <div class="position-relative">
+                    <i class="bi bi-search position-absolute top-50 translate-middle-y ms-2"
+                       style="color:var(--muted);left:0;"></i>
+                    <input type="text" class="form-control form-control-sm ps-4" placeholder="Buscar hilos..."
+                           style="border-color:#e2e8f0;min-width:200px;"/>
+                </div>
+            </div>
+
+            <div class="d-flex flex-column gap-3">
+
+                <!-- Pinned Thread -->
+                <div class="thread-card">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="avatar-sm" style="background:linear-gradient(135deg,#f59e0b,#d97706);">AD</div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                                <span class="pinned-badge"><i class="bi bi-pin-fill me-1"></i>Fijado</span>
+                                <span class="badge"
+                                      style="background:#dbeafe;color:#1d4ed8;font-size:.7rem;border-radius:6px;padding:3px 8px;">Anuncio</span>
+                            </div>
+                            <h6 class="fw-bold mb-1"><a href="VISTA_12_DetallesForo.html" class="text-decoration-none"
+                                                        style="color:var(--text);">Reglas del foro y código de
+                                conducta — Lee antes de publicar</a></h6>
+                            <div class="text-muted small mb-2">Por <strong>Admin PortalEmpleos</strong> · Hace 2 meses
+                            </div>
+                            <div class="d-flex gap-3 flex-wrap">
+                                <span class="stat-pill"><i class="bi bi-chat-dots"></i>24 respuestas</span>
+                                <span class="stat-pill"><i class="bi bi-eye"></i>15,420 vistas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thread 1 -->
+                <div class="thread-card">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="avatar-sm">MR</div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <span class="hot-badge"><i class="bi bi-fire me-1"></i>Trending</span>
+                                <span class="badge"
+                                      style="background:#eff6ff;color:var(--primary);font-size:.7rem;border-radius:6px;padding:3px 8px;">Tecnología</span>
+                            </div>
+                            <h6 class="fw-bold mb-1"><a href="VISTA_12_DetallesForo.html" class="text-decoration-none"
+                                                        style="color:var(--text);">¿Vale la pena aprender Rust en 2025
+                                para conseguir empleo?</a></h6>
+                            <div class="text-muted small mb-2">Por <strong>María Rodríguez</strong> · Hace 3 horas</div>
+                            <p class="text-muted small mb-2">He visto que Rust está ganando mucha tracción, pero no
+                                estoy segura si las empresas en LATAM lo están adoptando. ¿Alguien tiene
+                                experiencia?</p>
+                            <div class="d-flex gap-3 flex-wrap">
+                                <span class="stat-pill"><i class="bi bi-chat-dots"></i>38 respuestas</span>
+                                <span class="stat-pill"><i class="bi bi-eye"></i>1,240 vistas</span>
+                                <span class="stat-pill"><i class="bi bi-hand-thumbs-up"></i>87 likes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thread 2 -->
+                <div class="thread-card">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="avatar-sm" style="background:linear-gradient(135deg,#10B981,#059669);">CL</div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <span class="badge"
+                                      style="background:#d1fae5;color:#065f46;font-size:.7rem;border-radius:6px;padding:3px 8px;">✅ Resuelto</span>
+                                <span class="badge"
+                                      style="background:#eff6ff;color:var(--primary);font-size:.7rem;border-radius:6px;padding:3px 8px;">Búsqueda de Empleo</span>
+                            </div>
+                            <h6 class="fw-bold mb-1"><a href="VISTA_12_DetallesForo.html" class="text-decoration-none"
+                                                        style="color:var(--text);">Me rechazaron en 5 entrevistas
+                                consecutivas ¿qué estoy haciendo mal?</a></h6>
+                            <div class="text-muted small mb-2">Por <strong>Carlos López</strong> · Ayer</div>
+                            <p class="text-muted small mb-2">Llevo 2 meses buscando empleo como desarrollador junior.
+                                Tengo 1 año de experiencia y he pasado los filtros iniciales, pero siempre fallo en la
+                                parte técnica.</p>
+                            <div class="d-flex gap-3 flex-wrap">
+                                <span class="stat-pill"><i class="bi bi-chat-dots"></i>52 respuestas</span>
+                                <span class="stat-pill"><i class="bi bi-eye"></i>3,820 vistas</span>
+                                <span class="stat-pill"><i class="bi bi-hand-thumbs-up"></i>124 likes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thread 3 -->
+                <div class="thread-card">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="avatar-sm" style="background:linear-gradient(135deg,#f59e0b,#d97706);">AP</div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <span class="badge"
+                                      style="background:#fef3c7;color:#92400e;font-size:.7rem;border-radius:6px;padding:3px 8px;">Consejos de Carrera</span>
+                            </div>
+                            <h6 class="fw-bold mb-1"><a href="VISTA_12_DetallesForo.html" class="text-decoration-none"
+                                                        style="color:var(--text);">Comparto mi experiencia: de junior a
+                                senior en 3 años 🚀</a></h6>
+                            <div class="text-muted small mb-2">Por <strong>Ana Pérez</strong> · Hace 2 días</div>
+                            <p class="text-muted small mb-2">Quiero compartir mi roadmap personal por si le sirve a
+                                alguien. Empecé ganando $600/mes y hoy gano $4,200 trabajando remoto.</p>
+                            <div class="d-flex gap-3 flex-wrap">
+                                <span class="stat-pill"><i class="bi bi-chat-dots"></i>94 respuestas</span>
+                                <span class="stat-pill"><i class="bi bi-eye"></i>8,400 vistas</span>
+                                <span class="stat-pill"><i class="bi bi-hand-thumbs-up"></i>312 likes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thread 4 -->
+                <div class="thread-card">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="avatar-sm" style="background:linear-gradient(135deg,#7c3aed,#a855f7);">JG</div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <span class="badge"
+                                      style="background:#f3e8ff;color:#6b21a8;font-size:.7rem;border-radius:6px;padding:3px 8px;">Trabajo Remoto</span>
+                            </div>
+                            <h6 class="fw-bold mb-1"><a href="VISTA_12_DetallesForo.html" class="text-decoration-none"
+                                                        style="color:var(--text);">Empleos en USD desde El Salvador:
+                                ¿cómo declaro impuestos?</a></h6>
+                            <div class="text-muted small mb-2">Por <strong>José García</strong> · Hace 3 días</div>
+                            <p class="text-muted small mb-2">Acabo de conseguir mi primer empleo remoto para una empresa
+                                de EEUU. ¿Alguien sabe cómo funciona el tema fiscal en El Salvador para ingresos en
+                                USD?</p>
+                            <div class="d-flex gap-3 flex-wrap">
+                                <span class="stat-pill"><i class="bi bi-chat-dots"></i>29 respuestas</span>
+                                <span class="stat-pill"><i class="bi bi-eye"></i>2,100 vistas</span>
+                                <span class="stat-pill"><i class="bi bi-hand-thumbs-up"></i>67 likes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="thread-card">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="avatar-sm" style="background:linear-gradient(135deg,#be185d,#ec4899);">LM</div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <span class="badge"
+                                      style="background:#d1fae5;color:#065f46;font-size:.7rem;border-radius:6px;padding:3px 8px;">✅ Resuelto</span>
+                                <span class="badge"
+                                      style="background:#eff6ff;color:var(--primary);font-size:.7rem;border-radius:6px;padding:3px 8px;">Consejos de Carrera</span>
+                            </div>
+                            <h6 class="fw-bold mb-1"><a href="VISTA_12_DetallesForo.html" class="text-decoration-none"
+                                                        style="color:var(--text);">¿Bootcamp o Universidad para entrar a
+                                tech en 2025?</a></h6>
+                            <div class="text-muted small mb-2">Por <strong>Laura Mendez</strong> · Hace 5 días</div>
+                            <p class="text-muted small mb-2">Tengo 24 años y quiero cambiar de carrera hacia desarrollo
+                                web. ¿Qué recomiendan: seguir la universidad o hacer un bootcamp intensivo?</p>
+                            <div class="d-flex gap-3 flex-wrap">
+                                <span class="stat-pill"><i class="bi bi-chat-dots"></i>71 respuestas</span>
+                                <span class="stat-pill"><i class="bi bi-eye"></i>5,600 vistas</span>
+                                <span class="stat-pill"><i class="bi bi-hand-thumbs-up"></i>188 likes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-center mt-4">
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item disabled"><a class="page-link" href="#">‹</a></li>
+                        <li class="page-item active"><a class="page-link" href="#"
+                                                        style="background:var(--primary);border-color:var(--primary);">1</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">›</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="col-lg-4">
+            <!-- Tags -->
+            <div class="bg-white border rounded-3 p-4" style="border-color:#e2e8f0!important;">
+                <h6 class="fw-bold mb-3">Etiquetas populares</h6>
+                <div class="tag-cloud d-flex flex-wrap gap-2">
+                    <a href="#">#entrevistas</a>
+                    <a href="#">#remoto</a>
+                    <a href="#">#salarios</a>
+                    <a href="#">#javascript</a>
+                    <a href="#">#cv</a>
+                    <a href="#">#python</a>
+                    <a href="#">#junior</a>
+                    <a href="#">#react</a>
+                    <a href="#">#freelance</a>
+                    <a href="#">#carrera</a>
+                    <a href="#">#latam</a>
+                    <a href="#">#startup</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="py-4 mt-4">
+    <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-center small">
+            <div class="footer-brand">Portal<span>Empleos</span></div>
+            <span>© 2025 PortalEmpleos. Todos los derechos reservados.</span>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/navbar.js"></script>
+<script src="/assets/js/vistas/foroPublico.js"></script>
+</body>
+</html>

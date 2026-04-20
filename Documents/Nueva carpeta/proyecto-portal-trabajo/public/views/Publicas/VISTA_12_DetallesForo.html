@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PortalEmpleos — Hilo del Foro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap"
+          rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1d4ed8;
+            --accent: #10B981;
+            --bg: #F8FAFC;
+            --text: #1E293B;
+            --muted: #64748B;
+            --card-shadow: 0 2px 16px rgba(37, 99, 235, 0.08);
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Sora', sans-serif;
+        }
+
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .navbar-brand {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--primary) !important;
+        }
+
+        .navbar-brand span {
+            color: var(--accent);
+        }
+
+        .nav-link {
+            color: var(--text) !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary) !important;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .thread-header {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        .avatar-md {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-family: 'Sora', sans-serif;
+            flex-shrink: 0;
+        }
+
+        .post-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .post-card.best-answer {
+            border-color: var(--accent);
+            background: #f0fdf4;
+        }
+
+        .best-answer-badge {
+            background: #d1fae5;
+            color: #065f46;
+            font-size: .75rem;
+            font-weight: 700;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .post-actions button {
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            font-size: .85rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            transition: all .2s;
+        }
+
+        .post-actions button:hover {
+            background: #f1f5f9;
+            color: var(--text);
+        }
+
+        .reply-box {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 24px;
+        }
+
+        .author-sidebar {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .author-avatar-lg {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.2rem;
+            font-family: 'Sora', sans-serif;
+            margin: 0 auto 10px;
+        }
+
+        .related-thread {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 12px;
+            transition: all .2s;
+        }
+
+        .related-thread:hover {
+            border-color: var(--primary);
+        }
+
+        footer {
+            background: #0F172A;
+            color: #94a3b8;
+        }
+
+        .footer-brand {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: #fff;
+        }
+
+        .footer-brand span {
+            color: var(--accent);
+        }
+    </style>
+
+<style>
+/* ─── Fix: foro no se superpone al sidebar ─── */
+.page-wrapper, .main-content, #main-content {
+    overflow-x: hidden;
+}
+.sidebar ~ .main-content,
+.sidebar + div,
+aside ~ main {
+    min-width: 0;
+}
+#contenedor-foro .card {
+    word-break: break-word;
+}
+/* Spinner override: nunca infinito */
+.spinner-wrapper:empty::after {
+    content: 'No hay datos disponibles.';
+    display: block;
+    color: #6c757d;
+    text-align: center;
+    padding: 2rem;
+    font-size: .9rem;
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="/">Portal<span>Empleos</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMain">
+            <ul class="navbar-nav mx-auto gap-1">
+                <li class="nav-item"><a class="nav-link" href="/empleos">Empleos</a></li>
+                <li class="nav-item"><a class="nav-link" href="/recursos">Recursos</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/foro">Foro</a></li>
+            </ul>
+            <div class="d-flex gap-2">
+                <a href="/login" class="btn btn-outline-primary btn-sm px-3">Iniciar Sesión</a>
+                <a href="/registro" class="btn btn-primary btn-sm px-3">Registrarse</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="07-foro-listado.html"
+                                           style="color:var(--primary);text-decoration:none;">Foro</a></li>
+            <li class="breadcrumb-item"><a href="#" style="color:var(--primary);text-decoration:none;">Tecnología</a>
+            </li>
+            <li class="breadcrumb-item active text-muted">¿Vale la pena aprender Rust en 2025?</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <!-- MAIN -->
+        <div class="col-lg-8">
+
+            <!-- THREAD HEADER -->
+            <div class="thread-header">
+                <div class="d-flex gap-2 mb-2 flex-wrap">
+                    <span class="badge"
+                          style="background:#fee2e2;color:#991b1b;font-size:.75rem;border-radius:6px;padding:4px 10px;font-family:'Sora',sans-serif;font-weight:700;"><i
+                            class="bi bi-fire me-1"></i>Trending</span>
+                    <span class="badge"
+                          style="background:#eff6ff;color:var(--primary);font-size:.75rem;border-radius:6px;padding:4px 10px;font-family:'Sora',sans-serif;font-weight:600;">Tecnología</span>
+                </div>
+                <h1 class="h4 fw-bold mb-3">¿Vale la pena aprender Rust en 2025 para conseguir empleo?</h1>
+                <div class="d-flex align-items-center gap-3 flex-wrap text-muted small">
+                    <span><i class="bi bi-chat-dots me-1"></i>38 respuestas</span>
+                    <span><i class="bi bi-hand-thumbs-up me-1"></i>87 likes</span>
+                    <span><i class="bi bi-clock me-1"></i>Hace 3 horas</span>
+                </div>
+            </div>
+
+            <!-- ORIGINAL POST -->
+            <div class="post-card">
+                <div class="d-flex gap-3">
+                    <div>
+                        <div class="avatar-md mb-2"
+                             style="background:linear-gradient(135deg,var(--primary),var(--accent));">MR
+                        </div>
+                        <div class="text-center">
+                            <div class="fw-bold" style="font-size:.8rem;">María R.</div>
+                            <div class="text-muted" style="font-size:.7rem;">Miembro</div>
+                            <div class="text-muted" style="font-size:.7rem;">124 posts</div>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="text-muted small">Publicado hace 3 horas · <strong>Post #1</strong></span>
+                            <div class="d-flex gap-1">
+                                <button class="btn btn-sm btn-outline-secondary" style="font-size:.75rem;"><i
+                                        class="bi bi-share"></i></button>
+                            </div>
+                        </div>
+                        <div class="mb-3" style="line-height:1.7;">
+                            <p>He visto que Rust está ganando mucha tracción en los últimos años, especialmente en
+                                sistemas embebidos, WebAssembly y hasta desarrollo web con frameworks como Axum o
+                                Actix.</p>
+                            <p>Sin embargo, no estoy segura si las empresas en América Latina lo están adoptando
+                                realmente o si es más un lenguaje "de moda" en los círculos tech de EEUU/Europa.</p>
+                            <p><strong>Mi situación:</strong> tengo 3 años de experiencia en Python y JavaScript. Estoy
+                                considerando dedicar los próximos 6 meses a aprender Rust en serio, pero me preocupa que
+                                no haya demanda laboral en la región.</p>
+                            <p>¿Alguien trabaja con Rust en LATAM o tiene experiencia contratando desarrolladores de
+                                Rust? ¿Vale la inversión de tiempo?</p>
+                        </div>
+                        <div class="post-actions d-flex gap-1">
+                            <button><i class="bi bi-hand-thumbs-up me-1"></i>87</button>
+                            <button><i class="bi bi-reply me-1"></i>Responder</button>
+                            <button><i class="bi bi-flag me-1"></i>Reportar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BEST ANSWER -->
+            <div class="post-card">
+                <div class="d-flex gap-3">
+                    <div>
+                        <div class="avatar-md mb-2" style="background:linear-gradient(135deg,#10B981,#059669);">CL</div>
+                        <div class="text-center">
+                            <div class="fw-bold" style="font-size:.8rem;">Carlos L.</div>
+                            <div class="text-muted" style="font-size:.7rem;">Experto</div>
+                            <div class="text-muted" style="font-size:.7rem;">842 posts</div>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="text-muted small">Hace 2 horas · <strong>Post #2</strong></span>
+                            </div>
+                        </div>
+                        <div class="mb-3" style="line-height:1.7;">
+                            <p>¡Buena pregunta! Trabajo como Lead Developer en una empresa tech en México y hemos estado
+                                evaluando Rust internamente. Te doy mi perspectiva honesta:</p>
+                            <p><strong>La realidad del mercado LATAM:</strong> Rust tiene poca demanda laboral directa
+                                en la región comparado con JavaScript, Python o Java. Si buscas empleo a corto plazo
+                                (6-12 meses), probablemente no es la mejor inversión.</p>
+                            <p><strong>Sin embargo</strong>, hay casos donde sí tiene sentido aprenderlo:</p>
+                            <ul>
+                                <li>Si quieres trabajar remoto para empresas de EEUU/Europa (donde sí hay demanda)</li>
+                                <li>Si trabajas en fintech, blockchain o sistemas de alto rendimiento</li>
+                                <li>Como diferenciador en tu perfil para destacar entre candidatos</li>
+                            </ul>
+                            <p>Con tu perfil de Python + JavaScript, estarías mucho mejor aprendiendo TypeScript
+                                avanzado, AWS o especializándote en una vertical (IA/ML con Python, por ejemplo).</p>
+                        </div>
+                        <div class="post-actions d-flex gap-1">
+                            <button><i class="bi bi-hand-thumbs-up me-1"></i>64</button>
+                            <button><i class="bi bi-reply me-1"></i>Responder</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REPLY 2 -->
+            <div class="post-card">
+                <div class="d-flex gap-3">
+                    <div>
+                        <div class="avatar-md mb-2" style="background:linear-gradient(135deg,#f59e0b,#d97706);">AP</div>
+                        <div class="text-center">
+                            <div class="fw-bold" style="font-size:.8rem;">Ana P.</div>
+                            <div class="text-muted" style="font-size:.7rem;">Miembro</div>
+                            <div class="text-muted" style="font-size:.7rem;">315 posts</div>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="mb-2"><span class="text-muted small">Hace 1 hora · <strong>Post #3</strong></span>
+                        </div>
+                        <div class="mb-3" style="line-height:1.7;">
+                            <p>Yo trabajo remoto para una empresa de Berlín y usamos Rust para el backend de nuestro
+                                servicio de pagos. La diferencia de rendimiento vs Go es notable.</p>
+                            <p>Dicho esto, el proceso de aprendizaje es bastante empinado. Me tomó casi un año sentirme
+                                cómoda con el borrow checker. Si decides aprenderlo, prepárate para frustrarte 😅</p>
+                        </div>
+                        <div class="post-actions d-flex gap-1">
+                            <button><i class="bi bi-hand-thumbs-up me-1"></i>31</button>
+                            <button><i class="bi bi-reply me-1"></i>Responder</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="col-lg-4">
+            <!-- Thread author -->
+            <div class="author-sidebar mb-4">
+                <div class="author-avatar-lg">MR</div>
+                <div class="fw-bold mb-1">María Rodríguez</div>
+                <div class="text-muted small mb-2">Miembro desde Enero 2024</div>
+            </div>
+
+            <!-- Tags -->
+            <div class="bg-white border rounded-3 p-4" style="border-color:#e2e8f0!important;">
+                <h6 class="fw-bold mb-3">Etiquetas de este hilo</h6>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="#" class="badge text-decoration-none"
+                       style="background:#eff6ff;color:var(--primary);padding:6px 12px;border-radius:6px;font-size:.8rem;">#rust</a>
+                    <a href="#" class="badge text-decoration-none"
+                       style="background:#eff6ff;color:var(--primary);padding:6px 12px;border-radius:6px;font-size:.8rem;">#tecnología</a>
+                    <a href="#" class="badge text-decoration-none"
+                       style="background:#eff6ff;color:var(--primary);padding:6px 12px;border-radius:6px;font-size:.8rem;">#carrera</a>
+                    <a href="#" class="badge text-decoration-none"
+                       style="background:#eff6ff;color:var(--primary);padding:6px 12px;border-radius:6px;font-size:.8rem;">#latam</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="py-4 mt-4">
+    <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-center small">
+            <div class="footer-brand">Portal<span>Empleos</span></div>
+            <span>© 2025 PortalEmpleos. Todos los derechos reservados.</span>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/navbar.js"></script>
+<script src="/assets/js/vistas/detalleForoPublico.js"></script>
+</body>
+</html>

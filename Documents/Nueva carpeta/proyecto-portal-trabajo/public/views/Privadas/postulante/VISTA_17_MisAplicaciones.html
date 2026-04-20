@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PortalEmpleos — Mis Aplicaciones</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root { --primary:#2563EB; --primary-dark:#1d4ed8; --accent:#10B981; --bg:#F8FAFC; --text:#1E293B; --muted:#64748B; --sidebar-w:260px; }
+    body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); }
+    h1,h2,h3,h4,h5,h6 { font-family:'Sora',sans-serif; }
+    .sidebar { width:var(--sidebar-w); background:#0F172A; min-height:100vh; position:fixed; top:0; left:0; display:flex; flex-direction:column; z-index:100; }
+    .sidebar-brand { padding:24px 20px 16px; border-bottom:1px solid rgba(255,255,255,0.08); }
+    .sidebar-brand a { font-family:'Sora',sans-serif; font-weight:800; font-size:1.3rem; color:var(--primary); text-decoration:none; }
+    .sidebar-brand a span { color:var(--accent); }
+    .sidebar-nav { padding:16px 0; flex:1; }
+    .nav-section-label { color:rgba(255,255,255,0.3); font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; padding:8px 20px 4px; font-family:'Sora',sans-serif; }
+    .sidebar-link { display:flex; align-items:center; gap:10px; padding:10px 20px; color:rgba(255,255,255,0.65); text-decoration:none; font-size:.9rem; font-weight:500; transition:all .2s; }
+    .sidebar-link:hover { color:#fff; background:rgba(255,255,255,0.06); }
+    .sidebar-link.active { color:#fff; background:rgba(37,99,235,0.25); border-left:3px solid var(--primary); }
+    .sidebar-link i { font-size:1rem; width:20px; text-align:center; }
+    .sidebar-footer { padding:16px 20px; border-top:1px solid rgba(255,255,255,0.08); }
+    .user-mini .avatar { width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.85rem;font-family:'Sora',sans-serif; }
+    .main-content { margin-left:var(--sidebar-w); min-height:100vh; }
+    .topbar { background:#fff; border-bottom:1px solid #e2e8f0; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
+    .topbar h5 { font-weight:700; margin:0; font-size:1.1rem; }
+    .page-content { padding:28px; }
+    .btn-primary { background:var(--primary); border-color:var(--primary); font-family:'Sora',sans-serif; font-weight:600; }
+    .btn-primary:hover { background:var(--primary-dark); border-color:var(--primary-dark); }
+    .btn-outline-primary { border-color:var(--primary); color:var(--primary); font-family:'Sora',sans-serif; font-weight:600; }
+    .btn-outline-primary:hover { background:var(--primary); color:#fff; }
+
+    /* Kanban / Status columns */
+    .status-tabs .nav-link { color:var(--muted); font-weight:600; padding:10px 20px; border:none; border-bottom:2px solid transparent; border-radius:0; }
+    .status-tabs .nav-link.active { color:var(--primary); border-bottom-color:var(--primary); }
+    .status-tabs { border-bottom:1px solid #e2e8f0; background:#fff; border-radius:14px 14px 0 0; padding:0 16px; }
+
+    /* Application cards */
+    .app-card { background:#fff; border:1.5px solid #e2e8f0; border-radius:14px; padding:22px; transition:all .2s; }
+    .app-card:hover { border-color:var(--primary); box-shadow:0 2px 16px rgba(37,99,235,0.08); }
+    .app-card.interview { border-left:4px solid var(--accent); }
+    .company-logo-md { width:52px;height:52px;border-radius:12px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0; }
+    .status-badge { font-size:.75rem; font-weight:700; border-radius:20px; padding:5px 12px; font-family:'Sora',sans-serif; }
+    .status-review { background:#dbeafe; color:#1d4ed8; }
+    .status-interview { background:#d1fae5; color:#065f46; }
+    .status-rejected { background:#fee2e2; color:#991b1b; }
+    .status-pending { background:#fef3c7; color:#92400e; }
+    .status-offer { background:#f3e8ff; color:#6b21a8; }
+
+    /* Timeline for status */
+    .app-timeline { display:flex; gap:0; margin-top:14px; }
+    .app-timeline-step { flex:1; text-align:center; position:relative; }
+    .app-timeline-step::before { content:''; position:absolute; top:10px; left:50%; right:-50%; height:2px; background:#e2e8f0; }
+    .app-timeline-step:last-child::before { display:none; }
+    .app-timeline-step .dot { width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;margin:0 auto 4px;position:relative;z-index:1; }
+    .dot-done { background:var(--accent);color:#fff; }
+    .dot-current { background:var(--primary);color:#fff; }
+    .dot-pending { background:#e2e8f0;color:#94a3b8; }
+    .app-timeline-step .label { font-size:.7rem;color:var(--muted); }
+
+    /* Stats mini */
+    .stat-mini { background:#fff; border:1.5px solid #e2e8f0; border-radius:12px; padding:16px 20px; text-align:center; }
+    .stat-mini h4 { font-weight:800; margin-bottom:2px; }
+
+    .main-content { margin-left:var(--sidebar-w); min-height:100vh; }
+    .topbar { background:#fff; border-bottom:1px solid var(--border); padding:14px 24px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
+    .topbar h5 { font-weight:700; margin:0; font-size:1.05rem; }
+    .page-body { padding:24px; }
+
+    /* Botones */
+    .btn-primary { background:var(--primary);border-color:var(--primary);font-family:'Sora',sans-serif;font-weight:600; }
+    .btn-primary:hover { background:var(--primary-dark);border-color:var(--primary-dark); }
+    .btn-outline-primary { border-color:var(--primary);color:var(--primary);font-family:'Sora',sans-serif;font-weight:600; }
+    .btn-outline-primary:hover { background:var(--primary);color:#fff; }
+
+    /* Stats */
+    .stat-card { background:#fff; border:1.5px solid var(--border); border-radius:12px; padding:16px 20px; text-align:center; }
+    .stat-card h4 { font-weight:800; margin-bottom:2px; }
+
+    /* Tabs de filtro */
+    .filter-tabs { background:#fff; border:1.5px solid var(--border); border-radius:12px; padding:4px; display:flex; gap:4px; flex-wrap:wrap; }
+    .filter-tab { border:none; background:transparent; border-radius:8px; padding:7px 14px; font-size:.85rem; font-weight:500; color:var(--muted); cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif; }
+    .filter-tab:hover { background:#f1f5f9; color:var(--text); }
+    .filter-tab.active { background:var(--primary); color:#fff; font-weight:600; }
+
+    /* Lista de aplicaciones */
+    .app-list { background:#fff; border:1.5px solid var(--border); border-radius:12px; overflow:hidden; }
+    .app-item { display:flex; align-items:center; gap:14px; padding:16px 20px; border-bottom:1px solid #f1f5f9; transition:background .15s; }
+    .app-item:last-child { border-bottom:none; }
+    .app-item:hover { background:#fafbff; }
+
+    /* Logo empresa */
+    .co-logo { width:42px;height:42px;border-radius:10px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0; }
+
+    /* Info del empleo */
+    .app-info { flex:1; min-width:0; }
+    .app-info .job-title { font-weight:700; font-size:.9rem; color:var(--text); text-decoration:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block; }
+    .app-info .job-title:hover { color:var(--primary); }
+    .app-info .job-meta { color:var(--muted); font-size:.78rem; margin-top:2px; }
+
+    /* Badge de estado */
+    .status-pill { font-size:.72rem; font-weight:700; border-radius:20px; padding:4px 12px; font-family:'Sora',sans-serif; white-space:nowrap; flex-shrink:0; }
+    .s-pending   { background:#fef3c7; color:#92400e; }
+    .s-review    { background:#dbeafe; color:#1d4ed8; }
+    .s-interview { background:#d1fae5; color:#065f46; }
+    .s-offer     { background:#f3e8ff; color:#6b21a8; }
+    .s-rejected  { background:#fee2e2; color:#991b1b; }
+
+    /* Fecha */
+    .app-date { font-size:.75rem; color:var(--muted); flex-shrink:0; text-align:right; min-width:80px; }
+
+    /* Buscador */
+    .search-bar { background:#fff; border:1.5px solid var(--border); border-radius:10px; padding:8px 14px; display:flex; align-items:center; gap:8px; }
+    .search-bar input { border:none; outline:none; font-size:.875rem; font-family:'DM Sans',sans-serif; color:var(--text); flex:1; }
+    .search-bar input::placeholder { color:var(--muted); }
+  </style>
+</head>
+<body>
+
+<script>
+// ─── Sesión persistente: muestra nombre en cualquier elemento con data-user-nombre ───
+(function() {
+    var u = JSON.parse(localStorage.getItem('user') || 'null');
+    if (!u) return;
+    var nombre = u.nombre || u.nombres || u.email || 'Usuario';
+    // Populate any element requesting user name
+    ['userNameDisplay','sidebar-nombre','admin-nombre','saludo-nombre',
+     'empresa-nombre','postulante-nombre','user-display-name'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el && !el.dataset.populated) {
+            el.textContent = nombre;
+            el.dataset.populated = '1';
+        }
+    });
+    document.querySelectorAll('[data-user-nombre]').forEach(function(el) {
+        el.textContent = nombre;
+    });
+})();
+</script>
+
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <a href="/postulante/inicio">Portal<span>Empleos</span></a>
+        <div id="user-display-name" class="text-white-50 mt-1" style="font-size:.75rem;">Cargando...</div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">Principal</div>
+        <a href="/postulante/inicio" class="sidebar-link"><i class="bi bi-grid-fill"></i>Dashboard</a>
+        <a href="/postulante/perfil" class="sidebar-link"><i class="bi bi-person-fill"></i>Mi Perfil / CV</a>
+        <a href="/postulante/aplicaciones" class="sidebar-link active"><i class="bi bi-briefcase-fill"></i>Mis Aplicaciones</a>
+
+        <div class="nav-section-label mt-2">Explorar</div>
+        <a href="/postulante/empleos" class="sidebar-link"><i class="bi bi-search"></i>Buscar Empleos</a>
+        <a href="/postulante/recursos" class="sidebar-link"><i class="bi bi-book-fill"></i>Recursos</a>
+        <a href="/postulante/foro" class="sidebar-link"><i class="bi bi-chat-dots-fill"></i>Foro</a>
+
+        <div class="nav-section-label mt-2">Cuenta</div>
+        <a href="/" class="sidebar-link"><i class="bi bi-box-arrow-left"></i>Cerrar Sesión</a>
+    </nav>
+
+</aside>
+
+<div class="main-content">
+
+    <div class="topbar">
+        <div>
+            <h5>Mis Aplicaciones</h5>
+            <div class="text-muted" style="font-size:.82rem;">Seguimiento de tus postulaciones</div>
+        </div>
+        <a href="/postulante/empleos" class="btn btn-primary btn-sm px-3">
+            <i class="bi bi-search me-1"></i>Buscar empleos
+        </a>
+    </div>
+
+    <div class="page-body">
+
+        <!-- STATS (dinámicos) -->
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="stat-card"><h4 id="count-aplicaciones" style="color:var(--text);">--</h4><div class="text-muted small">Total</div></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card"><h4 id="count-revisando" style="color:#d97706;">--</h4><div class="text-muted small">En revisión</div></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card"><h4 id="count-aceptadas" style="color:var(--accent);">--</h4><div class="text-muted small">Aceptadas</div></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card"><h4 id="count-rechazadas" style="color:#ef4444;">--</h4><div class="text-muted small">Rechazadas</div></div>
+            </div>
+        </div>
+
+        <!-- FILTROS + BÚSQUEDA -->
+        <div class="d-flex align-items-center justify-content-between gap-3 mb-3 flex-wrap">
+            <div class="filter-tabs">
+                <button class="filter-tab active">Todas</button>
+                <button class="filter-tab">En revisión</button>
+                <button class="filter-tab">En proceso</button>
+                <button class="filter-tab">Cerradas</button>
+            </div>
+            <div class="search-bar" style="max-width:260px;">
+                <i class="bi bi-search text-muted" style="font-size:.85rem;"></i>
+                <input type="text" placeholder="Buscar empresa o cargo..."/>
+            </div>
+        </div>
+
+        <!-- LISTA DE APLICACIONES -->
+        <div class="app-list">
+
+            <!-- Entrevista -->
+                    <div id="aplicaciones-container">
+            <div class="text-center py-4 text-muted"><span class="spinner-border spinner-border-sm me-2"></span>Cargando tus aplicaciones...</div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/auth/checkAuth.js"></script>
+<script src="/assets/js/vistas/sidebarAuth.js"></script>
+<script src="/assets/js/vistas/misAplicaciones.js"></script>
+<script src="/assets/js/session.js"></script>
+</body>
+</html>

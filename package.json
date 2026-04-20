@@ -1,0 +1,26 @@
+{
+  "name": "portal-trabajo",
+  "version": "1.0.0",
+  "description": "Portal de Trabajo - Proyecto Final DAW",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.2",
+    "mysql2": "^3.22.0",
+    "sequelize": "^6.37.8",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
